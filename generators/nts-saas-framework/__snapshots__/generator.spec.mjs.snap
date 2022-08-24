@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SubGenerator nts-saas-framework of nts-saas JHipster blueprint run should succeed 1`] = `
+Object {
+  "template-file-nts-saas-framework": Object {
+    "stateCleared": "modified",
+  },
+}
+`;
