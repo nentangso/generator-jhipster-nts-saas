@@ -15,7 +15,7 @@ export default class extends BaseGenerator {
       async writingTemplateTask() {
         await this.writeFiles({
           sections: {
-            files: [{ templates: ['template-file-base'] }],
+            files: [{ templates: ['template-file-nts-saas-framework'] }],
           },
           context: this,
         });
