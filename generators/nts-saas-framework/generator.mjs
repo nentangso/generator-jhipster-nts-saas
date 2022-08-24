@@ -11,7 +11,7 @@ export default class extends BaseGenerator {
 
   get [WRITING_PRIORITY]() {
     return {
-      ...super._writing(),
+      // ...super._writing(),
       async writingTemplateTask() {
         await this.writeFiles({
           sections: {
@@ -25,7 +25,7 @@ export default class extends BaseGenerator {
 
   get [POST_WRITING_PRIORITY]() {
     return {
-      ...super._postWriting(),
+      // ...super._postWriting(),
       async postWritingTemplateTask() {},
     };
   }
