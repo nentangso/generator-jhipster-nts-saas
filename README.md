@@ -51,7 +51,7 @@ jhipster --blueprints nts-saas --skip-jhipster-dependencies
 
 [npm-image]: https://img.shields.io/npm/v/generator-jhipster-nts-saas.svg
 [npm-url]: https://npmjs.org/package/generator-jhipster-nts-saas
-[github-generator-image]: https://github.com/jhipster/generator-jhipster-nts-saas/actions/workflows/generator.yml/badge.svg
-[github-generator-url]: https://github.com/jhipster/generator-jhipster-nts-saas/actions/workflows/generator.yml
-[github-integration-image]: https://github.com/jhipster/generator-jhipster-nts-saas/actions/workflows/integration.yml/badge.svg
-[github-integration-url]: https://github.com/jhipster/generator-jhipster-nts-saas/actions/workflows/integration.yml
+[github-generator-image]: https://github.com/nentangso/generator-jhipster-nts-saas/actions/workflows/generator.yml/badge.svg
+[github-generator-url]: https://github.com/nentangso/generator-jhipster-nts-saas/actions/workflows/generator.yml
+[github-integration-image]: https://github.com/nentangso/generator-jhipster-nts-saas/actions/workflows/integration.yml/badge.svg
+[github-integration-url]: https://github.com/nentangso/generator-jhipster-nts-saas/actions/workflows/integration.yml
