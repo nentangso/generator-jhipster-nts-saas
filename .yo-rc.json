@@ -23,18 +23,7 @@
       },
       "common": {
         "command": false,
-        "priorities": [
-          "initializing",
-          "prompting",
-          "configuring",
-          "composing",
-          "loading",
-          "preparing",
-          "default",
-          "writing",
-          "postWriting",
-          "end"
-        ],
+        "priorities": ["initializing", "configuring", "composing", "loading", "preparing", "writing", "postWriting"],
         "sbs": true,
         "written": true
       },

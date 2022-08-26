@@ -3,15 +3,12 @@ import CommonGenerator from 'generator-jhipster/esm/generators/common';
 import {
   PRIORITY_PREFIX,
   INITIALIZING_PRIORITY,
-  PROMPTING_PRIORITY,
   CONFIGURING_PRIORITY,
   COMPOSING_PRIORITY,
   LOADING_PRIORITY,
   PREPARING_PRIORITY,
-  DEFAULT_PRIORITY,
   WRITING_PRIORITY,
   POST_WRITING_PRIORITY,
-  END_PRIORITY,
 } from 'generator-jhipster/esm/priorities';
 
 export default class extends CommonGenerator {
@@ -30,12 +27,6 @@ export default class extends CommonGenerator {
   get [INITIALIZING_PRIORITY]() {
     return {
       async initializingTemplateTask() {},
-    };
-  }
-
-  get [PROMPTING_PRIORITY]() {
-    return {
-      async promptingTemplateTask() {},
     };
   }
 
@@ -63,12 +54,6 @@ export default class extends CommonGenerator {
     };
   }
 
-  get [DEFAULT_PRIORITY]() {
-    return {
-      async defaultTemplateTask() {},
-    };
-  }
-
   get [WRITING_PRIORITY]() {
     return {
       async writingTemplateTask() {
@@ -85,12 +70,6 @@ export default class extends CommonGenerator {
   get [POST_WRITING_PRIORITY]() {
     return {
       async postWritingTemplateTask() {},
-    };
-  }
-
-  get [END_PRIORITY]() {
-    return {
-      async endTemplateTask() {},
     };
   }
 }
