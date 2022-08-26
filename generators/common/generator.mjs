@@ -26,36 +26,42 @@ export default class extends CommonGenerator {
 
   get [INITIALIZING_PRIORITY]() {
     return {
+      ...super._initializing(),
       async initializingTemplateTask() {},
     };
   }
 
   get [CONFIGURING_PRIORITY]() {
     return {
+      ...super._configuring(),
       async configuringTemplateTask() {},
     };
   }
 
   get [COMPOSING_PRIORITY]() {
     return {
+      ...super._composing(),
       async composingTemplateTask() {},
     };
   }
 
   get [LOADING_PRIORITY]() {
     return {
+      ...super._loading(),
       async loadingTemplateTask() {},
     };
   }
 
   get [PREPARING_PRIORITY]() {
     return {
+      ...super._preparing(),
       async preparingTemplateTask() {},
     };
   }
 
   get [WRITING_PRIORITY]() {
     return {
+      ...super._writing(),
       async writingTemplateTask() {
         await this.writeFiles({
           sections: {
@@ -69,6 +75,7 @@ export default class extends CommonGenerator {
 
   get [POST_WRITING_PRIORITY]() {
     return {
+      ...super._postWriting(),
       async postWritingTemplateTask() {},
     };
   }

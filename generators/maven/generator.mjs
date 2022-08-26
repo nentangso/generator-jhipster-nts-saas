@@ -29,48 +29,56 @@ export default class extends MavenGenerator {
 
   get [INITIALIZING_PRIORITY]() {
     return {
+      ...super._initializing(),
       async initializingTemplateTask() {},
     };
   }
 
   get [PROMPTING_PRIORITY]() {
     return {
+      ...super._prompting(),
       async promptingTemplateTask() {},
     };
   }
 
   get [CONFIGURING_PRIORITY]() {
     return {
+      ...super._configuring(),
       async configuringTemplateTask() {},
     };
   }
 
   get [COMPOSING_PRIORITY]() {
     return {
+      ...super._composing(),
       async composingTemplateTask() {},
     };
   }
 
   get [LOADING_PRIORITY]() {
     return {
+      ...super._loading(),
       async loadingTemplateTask() {},
     };
   }
 
   get [PREPARING_PRIORITY]() {
     return {
+      ...super._preparing(),
       async preparingTemplateTask() {},
     };
   }
 
   get [DEFAULT_PRIORITY]() {
     return {
+      ...super._default(),
       async defaultTemplateTask() {},
     };
   }
 
   get [WRITING_PRIORITY]() {
     return {
+      ...super._writing(),
       async writingTemplateTask() {
         await this.writeFiles({
           sections: {
@@ -84,12 +92,14 @@ export default class extends MavenGenerator {
 
   get [POST_WRITING_PRIORITY]() {
     return {
+      ...super._postWriting(),
       async postWritingTemplateTask() {},
     };
   }
 
   get [END_PRIORITY]() {
     return {
+      ...super._end(),
       async endTemplateTask() {},
     };
   }
