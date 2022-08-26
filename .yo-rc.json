@@ -6,43 +6,120 @@
     "generators": {
       "client": {
         "command": false,
-        "priorities": ["writing", "postWriting"],
+        "priorities": [
+          "initializing",
+          "prompting",
+          "configuring",
+          "composing",
+          "loading",
+          "preparing",
+          "default",
+          "writing",
+          "postWriting",
+          "end"
+        ],
         "sbs": true,
         "written": true
       },
       "common": {
         "command": false,
-        "priorities": ["writing", "postWriting"],
+        "priorities": [
+          "initializing",
+          "prompting",
+          "configuring",
+          "composing",
+          "loading",
+          "preparing",
+          "default",
+          "writing",
+          "postWriting",
+          "end"
+        ],
         "sbs": true,
         "written": true
       },
       "entity-client": {
         "command": false,
-        "priorities": ["writing", "postWriting"],
+        "priorities": [
+          "initializing",
+          "prompting",
+          "configuring",
+          "composing",
+          "loading",
+          "preparing",
+          "default",
+          "writing",
+          "postWriting",
+          "end"
+        ],
         "sbs": true,
         "written": true
       },
       "entity-i18n": {
         "command": false,
-        "priorities": ["writing", "postWriting"],
+        "priorities": [
+          "initializing",
+          "prompting",
+          "configuring",
+          "composing",
+          "loading",
+          "preparing",
+          "default",
+          "writing",
+          "postWriting",
+          "end"
+        ],
         "sbs": true,
         "written": true
       },
       "entity-server": {
         "command": false,
-        "priorities": ["writing", "postWriting"],
+        "priorities": [
+          "initializing",
+          "prompting",
+          "configuring",
+          "composing",
+          "loading",
+          "preparing",
+          "default",
+          "writing",
+          "postWriting",
+          "end"
+        ],
         "sbs": true,
         "written": true
       },
       "maven": {
         "command": false,
-        "priorities": ["writing", "postWriting"],
+        "priorities": [
+          "initializing",
+          "prompting",
+          "configuring",
+          "composing",
+          "loading",
+          "preparing",
+          "default",
+          "writing",
+          "postWriting",
+          "end"
+        ],
         "sbs": true,
         "written": true
       },
       "nts-saas-framework": {
         "command": false,
-        "priorities": ["writing", "postWriting"],
+        "priorities": [
+          "initializing",
+          "prompting",
+          "configuring",
+          "composing",
+          "loading",
+          "preparing",
+          "default",
+          "writing",
+          "postWriting",
+          "end"
+        ],
         "sbs": null,
         "written": true
       },
