@@ -114,7 +114,20 @@ export default class extends ServerGenerator {
           `ES_JAVA_OPTS=-Xms1024m -Xmx1024m`,
           true
         );
-      }
+      },
+      configureApplicationYml() {
+        if (this.databaseTypeMysql) {
+          this.needleApi.base.addBlockContentToFile(
+            {
+              path: `${SERVER_MAIN_RES_DIR}config/`,
+              file: `application.yml`,
+              needle: `hibernate:`,
+              splicable: [`  hibernate.dialect: ${this.packageName}.config.CustomMySqlDialect`],
+            },
+            `Cannot configure hibernate.dialect`
+          );
+        }
+      },
     };
   }
 
