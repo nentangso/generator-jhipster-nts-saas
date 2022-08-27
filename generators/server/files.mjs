@@ -1,10 +1,6 @@
 import { constants } from 'generator-jhipster';
 
-const {
-  SERVER_MAIN_SRC_DIR,
-  SERVER_MAIN_RES_DIR,
-  INTERPOLATE_REGEX,
-} = constants;
+const { SERVER_MAIN_SRC_DIR, SERVER_MAIN_RES_DIR, INTERPOLATE_REGEX } = constants;
 
 export function removeNtsSaasSkipFiles() {
   [
@@ -45,7 +41,7 @@ export function removeNtsSaasSkipFiles() {
   ].forEach(removingFile => {
     this.removeFile(`${SERVER_MAIN_SRC_DIR}${this.javaDir}${removingFile}`);
   });
-};
+}
 
 export const addingServerFiles = {
   serverConfigMySql: [

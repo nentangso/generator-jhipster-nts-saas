@@ -14,14 +14,9 @@ import {
   POST_WRITING_PRIORITY,
   END_PRIORITY,
 } from 'generator-jhipster/esm/priorities';
-import { addingServerFiles, removeNtsSaasSkipFiles } from "./files.mjs";
+import { addingServerFiles, removeNtsSaasSkipFiles } from './files.mjs';
 import { addNtsSaasFrameworkToMaven, configureNtsSaasFrameworkToServer } from '../nts-saas-framework-utils.mjs';
-const {
-  SERVER_MAIN_SRC_DIR,
-  SERVER_MAIN_RES_DIR,
-  DOCKER_DIR,
-  INTERPOLATE_REGEX,
-} = constants;
+const { SERVER_MAIN_SRC_DIR, SERVER_MAIN_RES_DIR, DOCKER_DIR, INTERPOLATE_REGEX } = constants;
 
 export default class extends ServerGenerator {
   constructor(args, opts, features) {
@@ -108,12 +103,7 @@ export default class extends ServerGenerator {
           `command: mysqld $1$2 --default-authentication-plugin=mysql_native_password --innodb-ft-min-token-size=2`,
           true
         );
-        this.replaceContent(
-          `${DOCKER_DIR}elasticsearch.yml`,
-          `ES_JAVA_OPTS=-Xms\\w+ -Xmx\\w+`,
-          `ES_JAVA_OPTS=-Xms1024m -Xmx1024m`,
-          true
-        );
+        this.replaceContent(`${DOCKER_DIR}elasticsearch.yml`, `ES_JAVA_OPTS=-Xms\\w+ -Xmx\\w+`, `ES_JAVA_OPTS=-Xms1024m -Xmx1024m`, true);
       },
       configureApplicationYml() {
         if (this.databaseTypeMysql) {
