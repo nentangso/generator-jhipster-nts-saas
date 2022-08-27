@@ -320,6 +320,9 @@ Object {
   "src/main/resources/config/liquibase/changelog/00000000000000_initial_schema.xml": Object {
     "stateCleared": "modified",
   },
+  "src/main/resources/config/liquibase/changelog/00000000000001_initial_nts_helper.xml": Object {
+    "stateCleared": "modified",
+  },
   "src/main/resources/config/liquibase/data/authority.csv": Object {
     "stateCleared": "modified",
   },
@@ -528,12 +531,6 @@ Object {
     "stateCleared": "modified",
   },
   "src/test/resources/testcontainers.properties": Object {
-    "stateCleared": "modified",
-  },
-  "template-file-common": Object {
-    "stateCleared": "modified",
-  },
-  "template-file-server": Object {
     "stateCleared": "modified",
   },
 }

@@ -35,8 +35,5 @@ Object {
   "sonar-project.properties": Object {
     "stateCleared": "modified",
   },
-  "template-file-common": Object {
-    "stateCleared": "modified",
-  },
 }
 `;

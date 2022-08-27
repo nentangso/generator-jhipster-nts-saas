@@ -890,12 +890,6 @@ Object {
   "src/test/resources/i18n/messages_en.properties": Object {
     "stateCleared": "modified",
   },
-  "template-file-client": Object {
-    "stateCleared": "modified",
-  },
-  "template-file-common": Object {
-    "stateCleared": "modified",
-  },
   "tsconfig.app.json": Object {
     "stateCleared": "modified",
   },

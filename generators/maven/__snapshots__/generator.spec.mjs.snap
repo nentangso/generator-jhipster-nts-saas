@@ -20,8 +20,5 @@ Object {
   "pom.xml": Object {
     "stateCleared": "modified",
   },
-  "template-file-maven": Object {
-    "stateCleared": "modified",
-  },
 }
 `;
