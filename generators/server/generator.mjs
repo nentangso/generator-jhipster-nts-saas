@@ -80,12 +80,12 @@ export default class extends ServerGenerator {
     return {
       ...super._writing(),
       async writingTemplateTask() {
-        await this.writeFiles({
-          sections: {
-            files: [{ templates: ['template-file-server'] }],
-          },
-          context: this,
-        });
+        // await this.writeFiles({
+        //   sections: {
+        //     files: [{ templates: ['template-file-server'] }],
+        //   },
+        //   context: this,
+        // });
       },
     };
   }

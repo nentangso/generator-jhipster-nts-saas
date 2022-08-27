@@ -80,12 +80,12 @@ export default class extends EntityClientGenerator {
     return {
       ...super._writing(),
       async writingTemplateTask() {
-        await this.writeFiles({
-          sections: {
-            files: [{ templates: ['template-file-entity-client'] }],
-          },
-          context: this,
-        });
+        // await this.writeFiles({
+        //   sections: {
+        //     files: [{ templates: ['template-file-entity-client'] }],
+        //   },
+        //   context: this,
+        // });
       },
     };
   }

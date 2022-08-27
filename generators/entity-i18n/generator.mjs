@@ -80,12 +80,12 @@ export default class extends EntityI18NGenerator {
     return {
       ...super._writing(),
       async writingTemplateTask() {
-        await this.writeFiles({
-          sections: {
-            files: [{ templates: ['template-file-entity-i18n'] }],
-          },
-          context: this,
-        });
+        // await this.writeFiles({
+        //   sections: {
+        //     files: [{ templates: ['template-file-entity-i18n'] }],
+        //   },
+        //   context: this,
+        // });
       },
     };
   }

@@ -80,12 +80,12 @@ export default class extends ClientGenerator {
     return {
       ...super._writing(),
       async writingTemplateTask() {
-        await this.writeFiles({
-          sections: {
-            files: [{ templates: ['template-file-client'] }],
-          },
-          context: this,
-        });
+        // await this.writeFiles({
+        //   sections: {
+        //     files: [{ templates: ['template-file-client'] }],
+        //   },
+        //   context: this,
+        // });
       },
     };
   }

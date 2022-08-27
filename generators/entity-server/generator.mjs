@@ -80,12 +80,12 @@ export default class extends EntityServerGenerator {
     return {
       ...super._writing(),
       async writingTemplateTask() {
-        await this.writeFiles({
-          sections: {
-            files: [{ templates: ['template-file-entity-server'] }],
-          },
-          context: this,
-        });
+        // await this.writeFiles({
+        //   sections: {
+        //     files: [{ templates: ['template-file-entity-server'] }],
+        //   },
+        //   context: this,
+        // });
       },
     };
   }

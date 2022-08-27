@@ -63,12 +63,12 @@ export default class extends CommonGenerator {
     return {
       ...super._writing(),
       async writingTemplateTask() {
-        await this.writeFiles({
-          sections: {
-            files: [{ templates: ['template-file-common'] }],
-          },
-          context: this,
-        });
+        // await this.writeFiles({
+        //   sections: {
+        //     files: [{ templates: ['template-file-common'] }],
+        //   },
+        //   context: this,
+        // });
       },
     };
   }
