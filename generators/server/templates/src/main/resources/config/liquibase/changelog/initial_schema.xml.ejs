@@ -63,17 +63,17 @@ _%>
             <column name="activation_key" type="varchar(20)"/>
             <column name="reset_key" type="varchar(20)"/>
   <%_ } _%>
-            <column name="created_by" type="varchar(50)">
+            <column name="created_by" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="created_date" type="timestamp"/>
+            <column name="created_at" type="timestamp"/>
   <%_ if (!authenticationTypeOauth2) { _%>
             <column name="reset_date" type="timestamp">
                 <constraints nullable="true"/>
             </column>
   <%_ } _%>
-            <column name="last_modified_by" type="varchar(50)"/>
-            <column name="last_modified_date" type="timestamp"/>
+            <column name="updated_by" type="varchar(255)"/>
+            <column name="updated_at" type="timestamp"/>
         </createTable>
 
         <createTable tableName="<%= jhiTablePrefix %>_authority">
@@ -143,9 +143,9 @@ _%>
             <column name="id" type="<%= idField.loadColumnType %>"/>
     <%_ } _%>
             <column name="activated" type="boolean"/>
-            <column name="created_date" type="timestamp"/>
+            <column name="created_at" type="timestamp"/>
         </loadData>
-        <dropDefaultValue tableName="<%= user.entityTableName %>" columnName="created_date" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="<%= user.entityTableName %>" columnName="created_at" columnDataType="${datetimeType}"/>
         <loadData
                   file="config/liquibase/data/authority.csv"
                   separator=";"

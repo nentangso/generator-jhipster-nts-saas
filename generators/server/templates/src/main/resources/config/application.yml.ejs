@@ -259,6 +259,9 @@ spring:
       hibernate.cache.infinispan.jgroups_cfg: default-configs/default-jgroups-tcp.xml
     <%_ } _%>
   <%_ } _%>
+      <%_ if (databaseTypeMysql) { _%>
+      hibernate.dialect: <%= packageName %>.config.CustomMySqlDialect
+      <%_ } _%>
     hibernate:
       ddl-auto: none
       naming:
