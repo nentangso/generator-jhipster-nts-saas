@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import { constants } from 'generator-jhipster';
 import ServerGenerator from 'generator-jhipster/esm/generators/server';
 import {
   PRIORITY_PREFIX,
@@ -13,6 +14,13 @@ import {
   POST_WRITING_PRIORITY,
   END_PRIORITY,
 } from 'generator-jhipster/esm/priorities';
+import { addingServerFiles, removeNtsSaasSkipFiles } from "./files.mjs";
+import { addNtsSaasFrameworkToMaven, configureNtsSaasFrameworkToServer } from '../nts-saas-framework-utils.mjs';
+const {
+  SERVER_MAIN_SRC_DIR,
+  SERVER_MAIN_RES_DIR,
+  INTERPOLATE_REGEX,
+} = constants;
 
 export default class extends ServerGenerator {
   constructor(args, opts, features) {
@@ -80,12 +88,17 @@ export default class extends ServerGenerator {
     return {
       ...super._writing(),
       async writingTemplateTask() {
-        // await this.writeFiles({
-        //   sections: {
-        //     files: [{ templates: ['template-file-server'] }],
-        //   },
-        //   context: this,
-        // });
+        await this.writeFiles({
+          sections: addingServerFiles,
+          context: this,
+        });
+      },
+      addNtsSaasFramework() {
+        if (this.skipServer) return;
+        if (this.buildToolMaven) {
+          addNtsSaasFrameworkToMaven?.apply(this);
+        }
+        configureNtsSaasFrameworkToServer?.apply(this);
       },
     };
   }
@@ -100,7 +113,9 @@ export default class extends ServerGenerator {
   get [END_PRIORITY]() {
     return {
       ...super._end(),
-      async endTemplateTask() {},
+      async endTemplateTask() {
+        removeNtsSaasSkipFiles?.apply(this);
+      },
     };
   }
 }

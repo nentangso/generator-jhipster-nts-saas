@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="nts_outbox_events_1" author="nts">
+        <createTable tableName="nts_outbox_events">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="aggregate_type" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="aggregate_id" type="varchar(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="event_type" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payload" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="aggregate_version" type="int" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="business_version" type="int" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+            <column name="actor" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <dropDefaultValue tableName="nts_outbox_events" columnName="created_at"/>
+    </changeSet>
+
+    <changeSet id="nts_options_1" author="nts">
+        <createTable tableName="nts_options">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="option_key" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="option_value" type="varchar(255)"/>
+            <column name="deleted" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="varchar(255)"/>
+            <column name="updated_at" type="timestamp"/>
+        </createTable>
+        <dropDefaultValue tableName="nts_options" columnName="created_at"/>
+        <dropDefaultValue tableName="nts_options" columnName="updated_at"/>
+    </changeSet>
+
+    <changeSet id="nts_notes_1" author="nts">
+        <createTable tableName="nts_notes">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="note" type="varchar(5000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="deleted" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="varchar(255)"/>
+            <column name="updated_at" type="timestamp"/>
+        </createTable>
+        <dropDefaultValue tableName="nts_notes" columnName="created_at"/>
+        <dropDefaultValue tableName="nts_notes" columnName="updated_at"/>
+    </changeSet>
+
+    <changeSet id="nts_tags_1" author="nts">
+        <createTable tableName="nts_tags">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="tags" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="deleted" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="varchar(255)"/>
+            <column name="updated_at" type="timestamp"/>
+        </createTable>
+        <dropDefaultValue tableName="nts_tags" columnName="created_at"/>
+        <dropDefaultValue tableName="nts_tags" columnName="updated_at"/>
+    </changeSet>
+
+    <changeSet id="nts_metafields_1" author="nts">
+        <createTable tableName="nts_metafields">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="owner_resource" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="owner_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="namespace" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nts_key" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nts_value" type="text"/>
+            <column name="nts_type" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(255)"/>
+            <column name="deleted" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="varchar(255)"/>
+            <column name="updated_at" type="timestamp"/>
+        </createTable>
+        <dropDefaultValue tableName="nts_metafields" columnName="created_at"/>
+        <dropDefaultValue tableName="nts_metafields" columnName="updated_at"/>
+        <createIndex tableName="nts_metafields" indexName="idx_owner_id_resource">
+            <column name="owner_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="owner_resource" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>
