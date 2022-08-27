@@ -19,6 +19,7 @@ import { addNtsSaasFrameworkToMaven, configureNtsSaasFrameworkToServer } from '.
 const {
   SERVER_MAIN_SRC_DIR,
   SERVER_MAIN_RES_DIR,
+  DOCKER_DIR,
   INTERPOLATE_REGEX,
 } = constants;
 
@@ -100,6 +101,20 @@ export default class extends ServerGenerator {
         }
         configureNtsSaasFrameworkToServer?.apply(this);
       },
+      configureDocker() {
+        this.replaceContent(
+          `${DOCKER_DIR}app.yml`,
+          `command: mysqld (.+)(--explicit_defaults_for_timestamp)`,
+          `command: mysqld $1$2 --default-authentication-plugin=mysql_native_password --innodb-ft-min-token-size=2`,
+          true
+        );
+        this.replaceContent(
+          `${DOCKER_DIR}elasticsearch.yml`,
+          `ES_JAVA_OPTS=-Xms\\w+ -Xmx\\w+`,
+          `ES_JAVA_OPTS=-Xms1024m -Xmx1024m`,
+          true
+        );
+      }
     };
   }
 
