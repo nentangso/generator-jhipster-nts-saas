@@ -13,6 +13,7 @@ import {
   POST_WRITING_PRIORITY,
   END_PRIORITY,
 } from 'generator-jhipster/esm/priorities';
+import { configureNtsSaasFrameworkToEntityServer } from '../nts-saas-framework-utils.mjs'
 
 export default class extends EntityServerGenerator {
   constructor(args, opts, features) {
@@ -80,12 +81,8 @@ export default class extends EntityServerGenerator {
     return {
       ...super._writing(),
       async writingTemplateTask() {
-        // await this.writeFiles({
-        //   sections: {
-        //     files: [{ templates: ['template-file-entity-server'] }],
-        //   },
-        //   context: this,
-        // });
+        if (this.skipServer) return;
+        configureNtsSaasFrameworkToEntityServer?.apply(this);
       },
     };
   }
