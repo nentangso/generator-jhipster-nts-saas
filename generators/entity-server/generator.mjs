@@ -13,7 +13,7 @@ import {
   POST_WRITING_PRIORITY,
   END_PRIORITY,
 } from 'generator-jhipster/esm/priorities';
-import { configureNtsSaasFrameworkToEntityServer } from '../nts-saas-framework-utils.mjs'
+import { configureNtsSaasFrameworkToEntityServer } from '../nts-saas-framework-utils.mjs';
 
 export default class extends EntityServerGenerator {
   constructor(args, opts, features) {
