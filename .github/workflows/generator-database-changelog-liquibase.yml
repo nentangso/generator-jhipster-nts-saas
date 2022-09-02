@@ -1,0 +1,152 @@
+#
+# Copyright 2013-2022 the original author or authors from the JHipster project.
+#
+# This file is part of the JHipster project, see https://www.jhipster.tech/
+# for more information.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+name: Incremental Changelog
+on: [workflow_call]
+jobs:
+  check-generator-database-changelog-liquibase:
+    name: ${{ matrix.app-type }}
+    runs-on: ubuntu-20.04
+    defaults:
+      run:
+        working-directory: ${{ github.workspace }}/app
+    if: >-
+      !contains(github.event.head_commit.message, '[ci skip]') &&
+      !contains(github.event.head_commit.message, '[skip ci]') &&
+      !contains(github.event.pull_request.title, '[skip ci]') &&
+      !contains(github.event.pull_request.title, '[ci skip]') &&
+      github.event.action != 'closed' &&
+      (github.event.pull_request.draft == false || !contains(github.event.pull_request.labels.*.name, 'pr: skip-ci')) &&
+      !contains(github.event.pull_request.user.login, 'dependabot')
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        app-type:
+          - liquibase-jdl-rename-field
+        include:
+          - app-type: liquibase-jdl-rename-field
+            entity: jdl
+            liquibase: jdl
+            environment: prod
+            war: 0
+    steps:
+      #----------------------------------------------------------------------
+      # Install all tools and check configuration
+      #----------------------------------------------------------------------
+      - name: 'SETUP: Checkout generator-jhipster'
+        uses: actions/checkout@v3
+        with:
+          path: generator-jhipster
+      - name: 'SETUP: environment'
+        id: setup
+        uses: ./generator-jhipster/.github/actions/setup
+        with:
+          application-sample: ${{ matrix.app-type }}
+          entities-sample: ${{ matrix.entity }}
+          application-environment: ${{ matrix.environment }}
+          application-packaging: ${{ (matrix.war == 1 && 'war') || 'jar' }}
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ steps.setup.outputs.node-version }}
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: ${{ steps.setup.outputs.java-version }}
+      - name: 'SETUP: load npm cache'
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.npm
+            ~/.cache/Cypress/
+          key: ${{ runner.os }}-node-${{ steps.setup.outputs.date }}-angular-${{ hashFiles('generator-jhipster/package-lock.json', 'generator-jhipster/**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ steps.setup.outputs.date }}-angular-
+            ${{ runner.os }}-node-${{ steps.setup.outputs.date }}-
+            ${{ runner.os }}-node-${{ steps.setup.outputs.date }}
+      - name: 'SETUP: load maven cache'
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ steps.setup.outputs.date }}-${{ hashFiles('generator-jhipster/**/pom.xml.ejs') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-${{ steps.setup.outputs.date }}-
+            ${{ runner.os }}-maven-${{ steps.setup.outputs.date }}
+      - name: 'SETUP: load gradle cache'
+        if: contains(matrix.app-type, 'gradle')
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ steps.setup.outputs.date }}-${{ hashFiles('generator-jhipster/**/build.gradle.ejs') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-${{ steps.setup.outputs.date }}-
+            ${{ runner.os }}-gradle-${{ steps.setup.outputs.date }}
+      - name: 'TOOLS: configure tools installed by the system'
+        run: $JHI_SCRIPTS/03-system.sh
+      - name: 'TOOLS: configure git'
+        run: $JHI_SCRIPTS/04-git-config.sh
+      #----------------------------------------------------------------------
+      # Install JHipster and generate project+entities
+      #----------------------------------------------------------------------
+      - name: 'GENERATION: install JHipster'
+        run: $JHI_SCRIPTS/10-install-jhipster.sh
+      - name: 'GENERATION: config'
+        run: $JHI_SCRIPTS/11-generate-config.sh
+      - name: 'GENERATION: project'
+        run: $JHI_SCRIPTS/12-generate-project.sh --with-entities --force --skip-jhipster-dependencies --creation-timestamp '2020-01-01'
+        env:
+          JHI_SAMPLES: ${{ github.workspace }}/generator-jhipster/test-integration/incremental-changelog-samples
+      - name: 'GENERATION: incremental project'
+        run: $JHI_SCRIPTS/12-generate-project.sh --incremental-changelog --with-entities --force
+        env:
+          JHI_SAMPLES: ${{ github.workspace }}/generator-jhipster/test-integration/incremental-changelog-samples
+          JHI_APP: ${{ matrix.app-type }}-post
+      - name: 'GENERATION: incremental changes'
+        run: |
+          git add .
+          git -c color.ui=always diff --cached
+      - name: 'GENERATION: jhipster info'
+        run: $JHI_SCRIPTS/14-jhipster-info.sh
+      #----------------------------------------------------------------------
+      # Launch tests
+      #----------------------------------------------------------------------
+      - name: 'TESTS: backend'
+        run: npm run ci:backend:test
+      - name: 'TESTS: frontend'
+        run: npm run ci:frontend:test
+      - name: 'TESTS: packaging'
+        run: npm run ci:e2e:package
+      - name: 'TESTS: Start docker-compose containers'
+        run: npm run ci:e2e:prepare
+      - name: 'E2E: Run'
+        id: e2e
+        run: npm run ci:e2e:run --if-present
+      - name: 'E2E: Store failure screenshots'
+        uses: actions/upload-artifact@v3
+        if: always() && steps.e2e.outcome == 'failure'
+        with:
+          name: screenshots-${{ matrix.app-type }}
+          path: ${{ steps.setup.outputs.application-path }}/*/cypress/screenshots
+      - name: 'ANALYSIS: Sonar analysis'
+        run: $JHI_SCRIPTS/25-sonar-analyze.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

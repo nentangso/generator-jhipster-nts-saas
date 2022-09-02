@@ -1,0 +1,44 @@
+name: Package lock maintenance
+on:
+  schedule:
+    - cron: 0 0 * * 6
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    permissions:
+      contents: write # for peter-evans/create-pull-request to create branch
+      pull-requests: write # for peter-evans/create-pull-request to create a PR
+    name: Bump transitional dependencies
+    if: github.repository == 'jhipster/generator-jhipster'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: npm install -g npm@latest
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Create commit
+        run: |
+          rm package-lock.json
+          npm install || npm install --force
+          git add .
+          ./test-integration/scripts/04-git-config.sh
+          git commit -a -m "Bump transitional dependencies" || true
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'Bump transitional dependencies'
+          title: 'Bump transitional dependencies'
+          body: Weekly transitional dependencies bump.
+          labels: 'theme: dependencies'
