@@ -1,16 +1,109 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
-# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
-
 version: 2
 updates:
+  - package-ecosystem: 'npm'
+    directory: '/'
+    rebase-strategy: 'auto'
+    schedule:
+      interval: 'weekly'
+    open-pull-requests-limit: 10
+    labels:
+      - 'theme: jhipster-internals'
+      - 'theme: dependencies'
+      - 'skip-changelog'
+    ignore:
+      # ESM only version
+      - dependency-name: 'p-queue'
+        versions: ['>=7']
+      - dependency-name: 'os-locale'
+        versions: ['>=6']
+      - dependency-name: 'sort-keys'
+        versions: ['>=5']
+      - dependency-name: 'escape-string-regexp'
+        versions: ['>=5']
+
+  - package-ecosystem: 'npm'
+    directory: '/generators/client/templates/angular/'
+    rebase-strategy: 'auto'
+    schedule:
+      interval: 'daily'
+    open-pull-requests-limit: 10
+    versioning-strategy: increase
+    labels:
+      - 'theme: angular'
+      - 'theme: dependencies'
+      - 'skip-changelog'
+    ignore:
+      # Should match generated project node major version.
+      - dependency-name: '@types/node'
+        versions: ['>=17']
+
+  - package-ecosystem: 'npm'
+    directory: '/generators/common/templates/'
+    rebase-strategy: 'auto'
+    schedule:
+      interval: 'daily'
+    open-pull-requests-limit: 10
+    versioning-strategy: increase
+    labels:
+      - 'theme: dependencies'
+      - 'skip-changelog'
+
+  - package-ecosystem: 'npm'
+    directory: '/generators/client/templates/common/'
+    rebase-strategy: 'auto'
+    schedule:
+      interval: 'daily'
+    open-pull-requests-limit: 10
+    versioning-strategy: increase
+    labels:
+      - 'theme: front'
+      - 'theme: dependencies'
+      - 'skip-changelog'
+
+  - package-ecosystem: 'npm'
+    directory: '/generators/client/templates/react/'
+    rebase-strategy: 'auto'
+    schedule:
+      interval: 'daily'
+    open-pull-requests-limit: 10
+    versioning-strategy: increase
+    labels:
+      - 'theme: react'
+      - 'theme: dependencies'
+      - 'skip-changelog'
+    ignore:
+      # Should match generated project node major version.
+      - dependency-name: '@types/node'
+        versions: ['>=17']
+
+  - package-ecosystem: 'npm'
+    directory: '/generators/client/templates/vue/'
+    rebase-strategy: 'auto'
+    schedule:
+      interval: 'daily'
+    open-pull-requests-limit: 10
+    versioning-strategy: increase
+    labels:
+      - 'theme: vue'
+      - 'theme: dependencies'
+      - 'skip-changelog'
+    ignore:
+      # vue3 dependency
+      - dependency-name: 'vue-loader'
+        versions: ['>=16']
+      # https://github.com/bootstrap-vue/bootstrap-vue/issues/5507
+      - dependency-name: 'bootstrap'
+        versions: ['>=5']
+      # Should match generated project node major version.
+      - dependency-name: '@types/node'
+        versions: ['>=17']
+
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
-      interval: 'daily'
-
-  - package-ecosystem: 'npm'
-    directory: '/'
-    schedule:
-      interval: 'daily'
+      interval: 'weekly'
+    open-pull-requests-limit: 10
+    labels:
+      - 'theme: github_actions'
+      - 'theme: CI builds'
+      - 'skip-changelog'
