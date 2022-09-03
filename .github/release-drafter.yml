@@ -27,7 +27,7 @@ categories:
     labels:
       - 'theme: OIDC/OAuth2'
       - 'theme: security'
-      - 'theme: keycloak"'
+      - 'theme: keycloak'
   - title: 🐾 JDL/Internals/Blueprints
     labels:
       - 'theme: JDL'
@@ -40,7 +40,7 @@ categories:
     labels:
       - 'theme: gradle'
   - title: 📝 Documentation
-    label: 'area: documentation:books:'
+    label: 'area: documentation :books:'
   - title: 📦 Dependency updates
     label: 'theme: dependencies'
   - title: 💩 Spam/Invalid
