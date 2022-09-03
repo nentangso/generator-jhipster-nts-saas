@@ -11,6 +11,7 @@ import {
   DEFAULT_PRIORITY,
   WRITING_PRIORITY,
   POST_WRITING_PRIORITY,
+  POST_INSTALL_PRIORITY,
   END_PRIORITY,
 } from 'generator-jhipster/esm/priorities';
 
@@ -23,54 +24,60 @@ export default class extends EntityI18NGenerator {
     if (!this.options.jhipsterContext) {
       throw new Error(`This is a JHipster blueprint and should be used only like ${chalk.yellow('jhipster --blueprints nts-saas')}`);
     }
-
-    this.sbsBlueprint = true;
   }
 
   get [INITIALIZING_PRIORITY]() {
     return {
+      ...super._initializing(),
       async initializingTemplateTask() {},
     };
   }
 
   get [PROMPTING_PRIORITY]() {
     return {
+      ...super._prompting(),
       async promptingTemplateTask() {},
     };
   }
 
   get [CONFIGURING_PRIORITY]() {
     return {
+      ...super._configuring(),
       async configuringTemplateTask() {},
     };
   }
 
   get [COMPOSING_PRIORITY]() {
     return {
+      ...super._composing(),
       async composingTemplateTask() {},
     };
   }
 
   get [LOADING_PRIORITY]() {
     return {
+      ...super._loading(),
       async loadingTemplateTask() {},
     };
   }
 
   get [PREPARING_PRIORITY]() {
     return {
+      ...super._preparing(),
       async preparingTemplateTask() {},
     };
   }
 
   get [DEFAULT_PRIORITY]() {
     return {
+      ...super._default(),
       async defaultTemplateTask() {},
     };
   }
 
   get [WRITING_PRIORITY]() {
     return {
+      ...super._writing(),
       async writingTemplateTask() {
         await this.writeFiles({
           sections: {
@@ -84,12 +91,21 @@ export default class extends EntityI18NGenerator {
 
   get [POST_WRITING_PRIORITY]() {
     return {
+      ...super._postWriting(),
       async postWritingTemplateTask() {},
+    };
+  }
+
+  get [POST_INSTALL_PRIORITY]() {
+    return {
+      ...super._postInstall(),
+      async postInstallTemplateTask() {},
     };
   }
 
   get [END_PRIORITY]() {
     return {
+      ...super._end(),
       async endTemplateTask() {},
     };
   }

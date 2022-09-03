@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SubGenerator maven of nts-saas JHipster blueprint run should succeed 1`] = `
+Object {
+  ".yo-rc.json": Object {
+    "stateCleared": "modified",
+  },
+  "template-file-maven": Object {
+    "stateCleared": "modified",
+  },
+}
+`;
