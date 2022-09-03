@@ -118,9 +118,9 @@ runs:
         JHI_WORKSPACE="${{ github.workspace }}"
         JHI_CLI_PACKAGE="${{inputs.package-with-executable}}"
 
-        JHI_BLUEPRINT_REPO="${{inputs.jhipster-bom-repository}}"
-        JHI_BLUEPRINT_BRANCH="${{inputs.jhipster-bom-branch}}"
-        JHI_BLUEPRINT_HOME="${{inputs.jhipster-bom-directory}}"
+        JHI_BLUEPRINT_REPO="${{inputs.generator-jhipster-blueprint-repository}}"
+        JHI_BLUEPRINT_BRANCH="${{inputs.generator-jhipster-blueprint-branch}}"
+        JHI_BLUEPRINT_HOME="${{inputs.generator-jhipster-blueprint-directory}}"
 
         source "$JHI_BLUEPRINT_HOME/test-integration/scripts/00-init-env.sh"
 
