@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 set -e
-source $(dirname $0)/00-init-env.sh
+JHI_DETECTED_DIR="$( cd "$( dirname $( dirname $( dirname "${BASH_SOURCE[0]}" ) ) )" >/dev/null 2>&1 && pwd )"
+source "$JHI_DETECTED_DIR/test-integration/scripts/00-init-env.sh"
 
 #-------------------------------------------------------------------------------
 # Install JHipster Dependencies and Server-side library

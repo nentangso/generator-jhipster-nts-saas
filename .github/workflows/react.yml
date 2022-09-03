@@ -47,7 +47,7 @@ jobs:
       workflow-react: ${{ steps.build.outputs.workflow-react }}
       workflow-vue: ${{ steps.build.outputs.workflow-vue }}
     steps:
-      - name: 'SETUP: Checkout generator-jhipster'
+      - name: 'SETUP: Checkout generator-jhipster-nts-saas'
         uses: actions/checkout@v3
         with:
           fetch-depth: 2
@@ -84,14 +84,14 @@ jobs:
       #----------------------------------------------------------------------
       # Install all tools and check configuration
       #----------------------------------------------------------------------
-      - name: 'SETUP: Checkout generator-jhipster'
+      - name: 'SETUP: Checkout generator-jhipster-nts-saas'
         uses: actions/checkout@v3
         with:
-          path: generator-jhipster
+          path: generator-jhipster-nts-saas
           fetch-depth: 2
       - name: 'SETUP: environment'
         id: setup
-        uses: ./generator-jhipster/.github/actions/setup
+        uses: ./generator-jhipster-nts-saas/.github/actions/setup
         with:
           application-sample: ${{ matrix.jhi-app-sample || matrix.app-sample || 'jdl' }}
           entities-sample: ${{ matrix.entity || 'none' }}
@@ -169,14 +169,14 @@ jobs:
         if: >-
           github.event.pull_request &&
           !contains(github.event.pull_request.labels.*.name, 'pr: disable-compare')
-        uses: ./generator-jhipster/.github/actions/compare-base
+        uses: ./generator-jhipster-nts-saas/.github/actions/compare-base
         with:
           extra-args: '--skip-jhipster-dependencies ${{ matrix.extra-args }}'
       - name: 'MERGE: compare changes'
         continue-on-error: true
         id: compare
         if: steps.base-app.outcome == 'success'
-        uses: ./generator-jhipster/.github/actions/compare
+        uses: ./generator-jhipster-nts-saas/.github/actions/compare
         with:
           application-path: ${{ steps.base-app.outputs.application-path }}
       #----------------------------------------------------------------------

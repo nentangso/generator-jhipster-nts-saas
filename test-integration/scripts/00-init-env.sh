@@ -21,7 +21,12 @@ fi
 
 # folder for generator-jhipster
 if [[ "$JHI_HOME" == "" ]]; then
-    JHI_HOME="$JHI_DETECTED_DIR"
+    JHI_HOME="$HOME/generator-jhipster"
+fi
+
+# folder for generator-jhipster blueprint
+if [[ "$JHI_BLUEPRINT_HOME" == "" ]]; then
+    JHI_BLUEPRINT_HOME="$JHI_DETECTED_DIR"
 fi
 
 # folder for executable package (blueprints or generator-jhipster)
@@ -48,7 +53,7 @@ fi
 
 # folder for test-integration
 if [[ "$JHI_INTEG" == "" ]]; then
-    JHI_INTEG="$JHI_HOME"/test-integration
+    JHI_INTEG="$JHI_BLUEPRINT_HOME"/test-integration
 fi
 
 # folder for samples
@@ -59,7 +64,7 @@ fi
 if [[ -d "$JHI_SAMPLES"/.jhipster ]]; then
     JHI_ENTITY_SAMPLES="$JHI_SAMPLES"/.jhipster
 else
-    JHI_ENTITY_SAMPLES="$JHI_HOME"/test-integration/samples/.jhipster
+    JHI_ENTITY_SAMPLES="$JHI_BLUEPRINT_HOME"/test-integration/samples/.jhipster
 fi
 
 # folder for jdls samples
@@ -79,7 +84,7 @@ fi
 
 # jdk version
 if [[ "$JHI_JDK" == "" ]]; then
-    JHI_JDK=$(grep -o "JAVA_VERSION = '[^']*'" $JHI_HOME/generators/generator-constants.js | cut -f2 -d "'")
+    JHI_JDK="11"
 fi
 
 # set correct OpenJDK version
@@ -92,10 +97,10 @@ if [[ "$JHI_CLI" == "" ]]; then
 fi
 
 # node version
-JHI_NODE_VERSION=$(grep -o "NODE_VERSION = '[^']*'" $JHI_HOME/generators/generator-constants.js | cut -f2 -d "'")
+JHI_NODE_VERSION="16.16.0"
 
 # npm version
-JHI_NPM_VERSION=$(grep -o '"npm": "[^"]*"' $JHI_HOME/generators/common/templates/package.json | cut -f4 -d '"')
+JHI_NPM_VERSION="8.15.1"
 
 # generator-jhipster version
-JHI_VERSION=$(grep -o '"version": "[^"]*"' $JHI_HOME/package.json | cut -f4 -d '"')
+JHI_VERSION="7.9.3"

@@ -59,7 +59,7 @@ inputs:
   generator-jhipster-branch:
     description: 'JHipster Generator branch'
     required: false
-    default: main
+    default: v7.9.3
   jhipster-bom-repository:
     description: 'JHipster BOM repository'
     required: false
@@ -80,6 +80,18 @@ inputs:
     description: 'Executable'
     required: false
     default: jhipster
+  generator-jhipster-blueprint-directory:
+    description: 'JHipster Generator blueprint path'
+    required: false
+    default: ${{ github.workspace }}/generator-jhipster-nts-saas
+  generator-jhipster-blueprint-repository:
+    description: 'JHipster Generator blueprint repository'
+    required: false
+    default: https://github.com/nentangso/generator-jhipster-nts-saas.git
+  generator-jhipster-blueprint-branch:
+    description: 'JHipster Generator blueprint branch'
+    required: false
+    default: ''
 outputs:
   java-version:
     description: 'Java version'
@@ -105,13 +117,22 @@ runs:
         JHI_HOME="${{ inputs.generator-jhipster-directory }}"
         JHI_WORKSPACE="${{ github.workspace }}"
         JHI_CLI_PACKAGE="${{inputs.package-with-executable}}"
-        source "$JHI_HOME/test-integration/scripts/00-init-env.sh"
+
+        JHI_BLUEPRINT_REPO="${{inputs.jhipster-bom-repository}}"
+        JHI_BLUEPRINT_BRANCH="${{inputs.jhipster-bom-branch}}"
+        JHI_BLUEPRINT_HOME="${{inputs.jhipster-bom-directory}}"
+
+        source "$JHI_BLUEPRINT_HOME/test-integration/scripts/00-init-env.sh"
 
         echo "JHI_INTEG=$JHI_INTEG" >> $GITHUB_ENV
         echo "JHI_HOME=$JHI_HOME" >> $GITHUB_ENV
         echo "JHI_SCRIPTS=$JHI_SCRIPTS" >> $GITHUB_ENV
         echo "JHI_CLI_PACKAGE_PATH=$JHI_CLI_PACKAGE_PATH" >> $GITHUB_ENV
         echo "JHI_CLI_PACKAGE=$JHI_CLI_PACKAGE" >> $GITHUB_ENV
+
+        echo "JHI_BLUEPRINT_REPO=$JHI_BLUEPRINT_REPO" >> $GITHUB_ENV
+        echo "JHI_BLUEPRINT_BRANCH=$JHI_BLUEPRINT_BRANCH" >> $GITHUB_ENV
+        echo "JHI_BLUEPRINT_HOME=$JHI_BLUEPRINT_HOME" >> $GITHUB_ENV
 
         echo "JHI_LIB_REPO=${{inputs.jhipster-bom-repository}}" >> $GITHUB_ENV
         echo "JHI_LIB_BRANCH=${{inputs.jhipster-bom-branch}}" >> $GITHUB_ENV
