@@ -35,13 +35,13 @@ jobs:
       run:
         working-directory: ${{ github.workspace }}/app
     steps:
-      - name: 'SETUP: Checkout generator-jhipster'
+      - name: 'SETUP: Checkout generator-jhipster-nts-saas'
         uses: actions/checkout@v3
         with:
-          path: generator-jhipster
+          path: generator-jhipster-nts-saas
       - name: 'SETUP: environment'
         id: setup
-        uses: ./generator-jhipster/.github/actions/setup
+        uses: ./generator-jhipster-nts-saas/.github/actions/setup
         with:
           jdl-sample: cache
           generator-jhipster-branch: local

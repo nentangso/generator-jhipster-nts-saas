@@ -37,14 +37,14 @@ jobs:
       #----------------------------------------------------------------------
       # Install all tools and check configuration
       #----------------------------------------------------------------------
-      - name: 'SETUP: Checkout generator-jhipster'
+      - name: 'SETUP: Checkout generator-jhipster-nts-saas'
         uses: actions/checkout@v3
         with:
-          path: generator-jhipster
+          path: generator-jhipster-nts-saas
           fetch-depth: 2
       - name: 'SETUP: environment'
         id: setup
-        uses: ./generator-jhipster/.github/actions/setup
+        uses: ./generator-jhipster-nts-saas/.github/actions/setup
         with:
           application-sample: ngx-default
           executable: jhipster-foo

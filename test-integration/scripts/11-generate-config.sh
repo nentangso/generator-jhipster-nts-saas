@@ -31,7 +31,7 @@ moveEntity() {
 }
 
 prepareFolder() {
-    cd "$JHI_HOME"
+    cd "$HOME"
     rm -rf "$JHI_FOLDER_APP"
 }
 #-------------------------------------------------------------------------------
