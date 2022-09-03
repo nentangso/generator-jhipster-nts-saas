@@ -11,6 +11,7 @@ import {
   DEFAULT_PRIORITY,
   WRITING_PRIORITY,
   POST_WRITING_PRIORITY,
+  POST_INSTALL_PRIORITY,
   END_PRIORITY,
 } from 'generator-jhipster/esm/priorities';
 
@@ -23,8 +24,6 @@ export default class extends EntityI18NGenerator {
     if (!this.options.jhipsterContext) {
       throw new Error(`This is a JHipster blueprint and should be used only like ${chalk.yellow('jhipster --blueprints nts-saas')}`);
     }
-
-    this.sbsBlueprint = true;
   }
 
   get [INITIALIZING_PRIORITY]() {
@@ -94,6 +93,13 @@ export default class extends EntityI18NGenerator {
     return {
       ...super._postWriting(),
       async postWritingTemplateTask() {},
+    };
+  }
+
+  get [POST_INSTALL_PRIORITY]() {
+    return {
+      ...super._postInstall(),
+      async postInstallTemplateTask() {},
     };
   }
 

@@ -11,6 +11,7 @@ import {
   DEFAULT_PRIORITY,
   WRITING_PRIORITY,
   POST_WRITING_PRIORITY,
+  POST_INSTALL_PRIORITY,
   END_PRIORITY,
 } from 'generator-jhipster/esm/priorities';
 
@@ -68,7 +69,7 @@ export default class extends BaseGenerator {
       async writingTemplateTask() {
         await this.writeFiles({
           sections: {
-            files: [{ templates: ['template-file-nts-saas-framework'] }],
+            files: [{ templates: ['template-file-base'] }],
           },
           context: this,
         });
@@ -79,6 +80,12 @@ export default class extends BaseGenerator {
   get [POST_WRITING_PRIORITY]() {
     return {
       async postWritingTemplateTask() {},
+    };
+  }
+
+  get [POST_INSTALL_PRIORITY]() {
+    return {
+      async postInstallTemplateTask() {},
     };
   }
 

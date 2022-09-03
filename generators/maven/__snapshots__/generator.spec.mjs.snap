@@ -2,22 +2,7 @@
 
 exports[`SubGenerator maven of nts-saas JHipster blueprint run should succeed 1`] = `
 Object {
-  ".mvn/wrapper/maven-wrapper.jar": Object {
-    "stateCleared": "modified",
-  },
-  ".mvn/wrapper/maven-wrapper.properties": Object {
-    "stateCleared": "modified",
-  },
   ".yo-rc.json": Object {
-    "stateCleared": "modified",
-  },
-  "mvnw": Object {
-    "stateCleared": "modified",
-  },
-  "mvnw.cmd": Object {
-    "stateCleared": "modified",
-  },
-  "pom.xml": Object {
     "stateCleared": "modified",
   },
 }
