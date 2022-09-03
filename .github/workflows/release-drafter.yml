@@ -33,7 +33,7 @@ jobs:
     permissions:
       contents: write # for release-drafter/release-drafter to create a github release
       pull-requests: write # for release-drafter/release-drafter to add label to PR
-    if: github.repository == 'jhipster/generator-jhipster'
+    if: github.repository == 'nentangso/generator-jhipster-nts-saas'
     runs-on: ubuntu-latest
     steps:
       # Drafts your next Release notes as Pull Requests are merged into "main"
