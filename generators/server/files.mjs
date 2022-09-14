@@ -35,6 +35,7 @@ export function removeNtsSaasSkipFiles() {
     'security/SpringSecurityAuditorAware.java',
     'config/FeignConfiguration.java',
     'config/AsyncConfiguration.java',
+    'config/CRLFLogConverter.java',
     'config/DateTimeFormatConfiguration.java',
     'config/JacksonConfiguration.java',
     'config/LocaleConfiguration.java',
