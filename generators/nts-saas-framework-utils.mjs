@@ -368,6 +368,12 @@ export function configureNtsSaasFrameworkToServer() {
     false
   );
   this.replaceContent(
+    `${SERVER_MAIN_RES_DIR}logback-spring.xml`,
+    `converterClass="${this.packageName}.config.CRLFLogConverter"`,
+    `converterClass="org.nentangso.core.config.NtsCRLFLogConverter"`,
+    false
+  );
+  this.replaceContent(
     `${SERVER_MAIN_RES_DIR}config/liquibase/changelog/00000000000000_initial_schema.xml`,
     `"${this.jhiPrefix}_user"`,
     `"${this.jhiPrefix}_users"`,
