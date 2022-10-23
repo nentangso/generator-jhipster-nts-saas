@@ -2,6 +2,30 @@ import { constants } from 'generator-jhipster';
 import { NTS_SAAS_DEPENDENCIES_VERSION } from './nts-constants.mjs';
 const { SERVER_MAIN_SRC_DIR, SERVER_MAIN_RES_DIR, SERVER_TEST_SRC_DIR } = constants;
 
+function relocatedFiles() {
+  return [
+    `config.NtsCRLFLogConverter`,
+    `domain.Authority`,
+    `domain.User${this.entitySuffix}`,
+    `repository.AuthorityRepository`,
+    `repository.UserRepository`,
+    `security.SecurityUtils`,
+    `security.oauth2.AudienceValidator`,
+    `security.oauth2.JwtGrantedAuthorityConverter`,
+    `service.UserService`,
+    `service.dto.AdminUserDTO`,
+    `service.dto.UserDTO`,
+    `service.mapper.UserMapper`,
+    `web.rest.errors.BadRequestAlertException`,
+    `web.rest.vm.ManagedUserVM`,
+  ];
+}
+
+function replaceNtsSaasCore(...files) {
+  const search = `${this.packageName}\.(${relocatedFiles.apply(this).join('|')})`;
+  files.forEach(file => this.replaceContent(file, search, `org.nentangso.core.\$1`, true));
+}
+
 export function addNtsSaasFrameworkToMaven() {
   this.needleApi.serverMaven.addProperty('nts-saas-dependencies.version', NTS_SAAS_DEPENDENCIES_VERSION);
   this.needleApi.serverMaven.addDependencyManagement(
@@ -132,70 +156,18 @@ export function configureNtsSaasFrameworkToServer() {
     `Cannot import AudienceValidator`
   );
   if (!this.cacheProviderNo) {
-    this.replaceContent(
-      `${SERVER_MAIN_SRC_DIR}${this.javaDir}config/CacheConfiguration.java`,
-      `${this.packageName}.repository.UserRepository`,
-      `org.nentangso.core.repository.UserRepository`,
-      true
-    );
-    this.replaceContent(
-      `${SERVER_MAIN_SRC_DIR}${this.javaDir}config/CacheConfiguration.java`,
-      `${this.packageName}.domain.UserEntity`,
-      `org.nentangso.core.domain.UserEntity`,
-      true
-    );
-    this.replaceContent(
-      `${SERVER_MAIN_SRC_DIR}${this.javaDir}config/CacheConfiguration.java`,
-      `${this.packageName}.domain.Authority`,
-      `org.nentangso.core.domain.Authority`,
-      true
-    );
+    replaceNtsSaasCore.apply(this, [`${SERVER_MAIN_SRC_DIR}${this.javaDir}config/CacheConfiguration.java`]);
   }
-  if (this.applicationTypeGateway) {
-    this.replaceContent(
+  if (!this.applicationTypeMicroservice) {
+    replaceNtsSaasCore.apply(this, [
       `${SERVER_MAIN_SRC_DIR}${this.javaDir}repository/rowmapper/UserRowMapper.java`,
-      `${this.packageName}.domain.UserEntity`,
-      `org.nentangso.core.domain.UserEntity`,
-      true
-    );
-    this.replaceContent(
       `${SERVER_MAIN_SRC_DIR}${this.javaDir}web/rest/AccountResource.java`,
-      `${this.packageName}.security.SecurityUtils`,
-      `org.nentangso.core.security.SecurityUtils`,
-      true
-    );
-    this.replaceContent(
-      `${SERVER_MAIN_SRC_DIR}${this.javaDir}web/rest/AccountResource.java`,
-      `${this.packageName}.service.UserService`,
-      `org.nentangso.core.service.UserService`,
-      true
-    );
-    this.replaceContent(
-      `${SERVER_MAIN_SRC_DIR}${this.javaDir}web/rest/AccountResource.java`,
-      `${this.packageName}.service.dto.AdminUserDTO`,
-      `org.nentangso.core.service.dto.AdminUserDTO`,
-      true
-    );
-    // TEST
+      `${SERVER_TEST_SRC_DIR}${this.javaDir}service/UserServiceIT.java`,
+      `${SERVER_TEST_SRC_DIR}${this.javaDir}service/mapper/UserMapperTest.java`,
+      `${SERVER_TEST_SRC_DIR}${this.javaDir}web/rest/UserResourceIT.java`,
+      `${SERVER_TEST_SRC_DIR}${this.javaDir}web/rest/PublicUserResourceIT.java`,
+    ]);
     // UserMapperTest
-    this.replaceContent(
-      `${SERVER_TEST_SRC_DIR}${this.javaDir}service/mapper/UserMapperTest.java`,
-      `${this.packageName}.domain.UserEntity`,
-      `org.nentangso.core.domain.UserEntity`,
-      true
-    );
-    this.replaceContent(
-      `${SERVER_TEST_SRC_DIR}${this.javaDir}service/mapper/UserMapperTest.java`,
-      `${this.packageName}.service.dto.UserDTO`,
-      `org.nentangso.core.service.dto.UserDTO`,
-      true
-    );
-    this.replaceContent(
-      `${SERVER_TEST_SRC_DIR}${this.javaDir}service/mapper/UserMapperTest.java`,
-      `${this.packageName}.service.dto.AdminUserDTO`,
-      `org.nentangso.core.service.dto.AdminUserDTO`,
-      true
-    );
     this.needleApi.base.addBlockContentToFile(
       {
         path: `${SERVER_TEST_SRC_DIR}${this.javaDir}service/mapper/`,
@@ -206,24 +178,6 @@ export function configureNtsSaasFrameworkToServer() {
       `Cannot import UserMapper`
     );
     // UserServiceIT
-    this.replaceContent(
-      `${SERVER_TEST_SRC_DIR}${this.javaDir}service/UserServiceIT.java`,
-      `${this.packageName}.repository.UserRepository`,
-      `org.nentangso.core.repository.UserRepository`,
-      true
-    );
-    this.replaceContent(
-      `${SERVER_TEST_SRC_DIR}${this.javaDir}service/UserServiceIT.java`,
-      `${this.packageName}.domain.UserEntity`,
-      `org.nentangso.core.domain.UserEntity`,
-      true
-    );
-    this.replaceContent(
-      `${SERVER_TEST_SRC_DIR}${this.javaDir}service/UserServiceIT.java`,
-      `${this.packageName}.service.dto.AdminUserDTO`,
-      `org.nentangso.core.service.dto.AdminUserDTO`,
-      true
-    );
     this.needleApi.base.addBlockContentToFile(
       {
         path: `${SERVER_TEST_SRC_DIR}${this.javaDir}service/`,
@@ -234,88 +188,17 @@ export function configureNtsSaasFrameworkToServer() {
       `Cannot import UserService`
     );
     // UserResourceIT
-    this.replaceContent(
-      `${SERVER_TEST_SRC_DIR}${this.javaDir}web/rest/UserResourceIT.java`,
-      `${this.packageName}.repository.UserRepository`,
-      `org.nentangso.core.repository.UserRepository`,
-      true
-    );
-    this.replaceContent(
-      `${SERVER_TEST_SRC_DIR}${this.javaDir}web/rest/UserResourceIT.java`,
-      `${this.packageName}.repository.AuthorityRepository`,
-      `org.nentangso.core.repository.AuthorityRepository`,
-      true
-    );
-    this.replaceContent(
-      `${SERVER_TEST_SRC_DIR}${this.javaDir}web/rest/UserResourceIT.java`,
-      `${this.packageName}.domain.UserEntity`,
-      `org.nentangso.core.domain.UserEntity`,
-      true
-    );
-    this.replaceContent(
-      `${SERVER_TEST_SRC_DIR}${this.javaDir}web/rest/UserResourceIT.java`,
-      `${this.packageName}.domain.Authority`,
-      `org.nentangso.core.domain.Authority`,
-      true
-    );
-    this.replaceContent(
-      `${SERVER_TEST_SRC_DIR}${this.javaDir}web/rest/UserResourceIT.java`,
-      `${this.packageName}.service.dto.AdminUserDTO`,
-      `org.nentangso.core.service.dto.AdminUserDTO`,
-      true
-    );
-    this.replaceContent(
-      `${SERVER_TEST_SRC_DIR}${this.javaDir}web/rest/UserResourceIT.java`,
-      `${this.packageName}.service.mapper.UserMapper`,
-      `org.nentangso.core.service.mapper.UserMapper`,
-      true
-    );
     this.replaceContent(`${SERVER_TEST_SRC_DIR}${this.javaDir}web/rest/UserResourceIT.java`, `CreatedDate`, `CreatedAt`, true);
     this.replaceContent(`${SERVER_TEST_SRC_DIR}${this.javaDir}web/rest/UserResourceIT.java`, `LastModifiedBy`, `UpdatedBy`, true);
     this.replaceContent(`${SERVER_TEST_SRC_DIR}${this.javaDir}web/rest/UserResourceIT.java`, `LastModifiedDate`, `UpdatedAt`, true);
     // PublicUserResourceIT
-    this.replaceContent(
-      `${SERVER_TEST_SRC_DIR}${this.javaDir}web/rest/PublicUserResourceIT.java`,
-      `${this.packageName}.repository.UserRepository`,
-      `org.nentangso.core.repository.UserRepository`,
-      true
-    );
-    this.replaceContent(
-      `${SERVER_TEST_SRC_DIR}${this.javaDir}web/rest/PublicUserResourceIT.java`,
-      `${this.packageName}.repository.AuthorityRepository`,
-      `org.nentangso.core.repository.AuthorityRepository`,
-      true
-    );
-    this.replaceContent(
-      `${SERVER_TEST_SRC_DIR}${this.javaDir}web/rest/PublicUserResourceIT.java`,
-      `${this.packageName}.domain.UserEntity`,
-      `org.nentangso.core.domain.UserEntity`,
-      true
-    );
-    this.replaceContent(
-      `${SERVER_TEST_SRC_DIR}${this.javaDir}web/rest/PublicUserResourceIT.java`,
-      `${this.packageName}.domain.Authority`,
-      `org.nentangso.core.domain.Authority`,
-      true
-    );
-    this.replaceContent(
-      `${SERVER_TEST_SRC_DIR}${this.javaDir}web/rest/PublicUserResourceIT.java`,
-      `${this.packageName}.service.dto.UserDTO`,
-      `org.nentangso.core.service.dto.UserDTO`,
-      true
-    );
-    this.replaceContent(
-      `${SERVER_TEST_SRC_DIR}${this.javaDir}web/rest/PublicUserResourceIT.java`,
-      `${this.packageName}.service.dto.AdminUserDTO`,
-      `org.nentangso.core.service.dto.AdminUserDTO`,
-      true
-    );
-    this.replaceContent(
-      `${SERVER_TEST_SRC_DIR}${this.javaDir}web/rest/PublicUserResourceIT.java`,
-      `${this.packageName}.service.mapper.UserMapper`,
-      `org.nentangso.core.service.mapper.UserMapper`,
-      true
-    );
+  }
+  if (this.authenticationTypeJwt) {
+    replaceNtsSaasCore.apply(this, [
+      `${SERVER_MAIN_SRC_DIR}${this.javaDir}security/DomainUserDetailsService.java`,
+      `${SERVER_MAIN_SRC_DIR}${this.javaDir}service/dto/AdminUser.java`,
+      `${SERVER_MAIN_SRC_DIR}${this.javaDir}service/dto/User.java`,
+    ]);
   }
   this.replaceContent(
     `${SERVER_TEST_SRC_DIR}${this.javaDir}web/rest/errors/ExceptionTranslatorIT.java`,
@@ -381,12 +264,11 @@ export function configureNtsSaasFrameworkToServer() {
 }
 
 export function configureNtsSaasFrameworkToEntityServer() {
-  this.replaceContent(
+  replaceNtsSaasCore.apply(this, [
     `${SERVER_MAIN_SRC_DIR}${this.entityAbsoluteFolder}/web/rest/${this.entityClass}Resource.java`,
-    `${this.packageName}.web.rest.errors.BadRequestAlertException`,
-    `org.nentangso.core.web.rest.errors.BadRequestAlertException`,
-    true
-  );
+    `${SERVER_MAIN_SRC_DIR}${this.entityAbsoluteFolder}/repository/${this.entityClass}Repository.java`,
+    `${SERVER_MAIN_SRC_DIR}${this.entityAbsoluteFolder}/service/${this.entityClass}Service.java`,
+  ]);
   this.replaceContent(
     `${SERVER_MAIN_SRC_DIR}${this.entityAbsoluteFolder}/domain/${this.entityClass}${this.entitySuffix}.java`,
     `package ${this.packageName}.domain;`,
