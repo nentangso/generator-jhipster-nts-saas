@@ -8,6 +8,7 @@ import {
   COMPOSING_PRIORITY,
   LOADING_PRIORITY,
   PREPARING_PRIORITY,
+  PREPARING_FIELDS_PRIORITY,
   DEFAULT_PRIORITY,
   WRITING_PRIORITY,
   POST_WRITING_PRIORITY,
@@ -66,6 +67,13 @@ export default class extends EntityServerGenerator {
     return {
       ...super._preparing(),
       async preparingTemplateTask() {},
+    };
+  }
+
+  get [PREPARING_FIELDS_PRIORITY]() {
+    return {
+      ...super._preparingFields(),
+      async preparingFieldsTemplateTask() {},
     };
   }
 
