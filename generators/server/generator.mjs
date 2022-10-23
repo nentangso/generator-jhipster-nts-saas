@@ -102,7 +102,9 @@ export default class extends ServerGenerator {
           `command: mysqld $1$2 --default-authentication-plugin=mysql_native_password --innodb-ft-min-token-size=2`,
           true
         );
-        this.replaceContent(`${DOCKER_DIR}elasticsearch.yml`, `ES_JAVA_OPTS=-Xms\\w+ -Xmx\\w+`, `ES_JAVA_OPTS=-Xms1024m -Xmx1024m`, true);
+        if (this.searchEngineElasticsearch) {
+          this.replaceContent(`${DOCKER_DIR}elasticsearch.yml`, `ES_JAVA_OPTS=-Xms\\w+ -Xmx\\w+`, `ES_JAVA_OPTS=-Xms1024m -Xmx1024m`, true);
+        }
       },
       configureApplicationYml() {
         if (this.databaseTypeMysql) {

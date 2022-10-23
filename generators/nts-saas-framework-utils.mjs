@@ -54,38 +54,40 @@ export function configureNtsSaasFrameworkToServer() {
     },
     `Cannot import @ComponentScan`
   );
-  if (this.reactive) {
-    this.needleApi.base.addBlockContentToFile(
-      {
-        path: `${SERVER_MAIN_SRC_DIR}${this.javaDir}config/`,
-        file: `DatabaseConfiguration.java`,
-        needle: `import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories;`,
-        splicable: [`import org.springframework.boot.autoconfigure.domain.EntityScan;`],
-      },
-      `Cannot import @EntityScan`
-    );
-    this.needleApi.base.addBlockContentToFile(
-      {
-        path: `${SERVER_MAIN_SRC_DIR}${this.javaDir}config/`,
-        file: `DatabaseConfiguration.java`,
-        needle: `@EnableR2dbcRepositories`,
-        splicable: [`@EntityScan({"org.nentangso.core.domain", "${this.packageName}.domain"})`],
-      },
-      `Cannot configure @EntityScan`
-    );
-    this.replaceContent(
-      `${SERVER_MAIN_SRC_DIR}${this.javaDir}config/DatabaseConfiguration.java`,
-      `@EnableR2dbcRepositories({`,
-      `@EnableR2dbcRepositories({ "org.nentangso.core.repository",`,
-      false
-    );
-  } else {
-    this.replaceContent(
-      `${SERVER_MAIN_SRC_DIR}${this.javaDir}config/DatabaseConfiguration.java`,
-      `@EnableJpaAuditing(auditorAwareRef = "springSecurityAuditorAware")`,
-      `@EnableJpaAuditing(auditorAwareRef = "ntsSpringSecurityAuditorAware")`,
-      false
-    );
+  if (this.databaseTypeSql) {
+    if (this.reactive) {
+      this.needleApi.base.addBlockContentToFile(
+        {
+          path: `${SERVER_MAIN_SRC_DIR}${this.javaDir}config/`,
+          file: `DatabaseConfiguration.java`,
+          needle: `import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories;`,
+          splicable: [`import org.springframework.boot.autoconfigure.domain.EntityScan;`],
+        },
+        `Cannot import @EntityScan`
+      );
+      this.needleApi.base.addBlockContentToFile(
+        {
+          path: `${SERVER_MAIN_SRC_DIR}${this.javaDir}config/`,
+          file: `DatabaseConfiguration.java`,
+          needle: `@EnableR2dbcRepositories`,
+          splicable: [`@EntityScan({"org.nentangso.core.domain", "${this.packageName}.domain"})`],
+        },
+        `Cannot configure @EntityScan`
+      );
+      this.replaceContent(
+        `${SERVER_MAIN_SRC_DIR}${this.javaDir}config/DatabaseConfiguration.java`,
+        `@EnableR2dbcRepositories({`,
+        `@EnableR2dbcRepositories({ "org.nentangso.core.repository",`,
+        false
+      );
+    } else {
+      this.replaceContent(
+        `${SERVER_MAIN_SRC_DIR}${this.javaDir}config/DatabaseConfiguration.java`,
+        `@EnableJpaAuditing(auditorAwareRef = "springSecurityAuditorAware")`,
+        `@EnableJpaAuditing(auditorAwareRef = "ntsSpringSecurityAuditorAware")`,
+        false
+      );
+    }
   }
   this.replaceContent(
     `${SERVER_MAIN_SRC_DIR}${this.javaDir}config/SecurityConfiguration.java`,
@@ -129,24 +131,26 @@ export function configureNtsSaasFrameworkToServer() {
     },
     `Cannot import AudienceValidator`
   );
-  this.replaceContent(
-    `${SERVER_MAIN_SRC_DIR}${this.javaDir}config/CacheConfiguration.java`,
-    `${this.packageName}.repository.UserRepository`,
-    `org.nentangso.core.repository.UserRepository`,
-    true
-  );
-  this.replaceContent(
-    `${SERVER_MAIN_SRC_DIR}${this.javaDir}config/CacheConfiguration.java`,
-    `${this.packageName}.domain.UserEntity`,
-    `org.nentangso.core.domain.UserEntity`,
-    true
-  );
-  this.replaceContent(
-    `${SERVER_MAIN_SRC_DIR}${this.javaDir}config/CacheConfiguration.java`,
-    `${this.packageName}.domain.Authority`,
-    `org.nentangso.core.domain.Authority`,
-    true
-  );
+  if (!this.cacheProviderNo) {
+    this.replaceContent(
+      `${SERVER_MAIN_SRC_DIR}${this.javaDir}config/CacheConfiguration.java`,
+      `${this.packageName}.repository.UserRepository`,
+      `org.nentangso.core.repository.UserRepository`,
+      true
+    );
+    this.replaceContent(
+      `${SERVER_MAIN_SRC_DIR}${this.javaDir}config/CacheConfiguration.java`,
+      `${this.packageName}.domain.UserEntity`,
+      `org.nentangso.core.domain.UserEntity`,
+      true
+    );
+    this.replaceContent(
+      `${SERVER_MAIN_SRC_DIR}${this.javaDir}config/CacheConfiguration.java`,
+      `${this.packageName}.domain.Authority`,
+      `org.nentangso.core.domain.Authority`,
+      true
+    );
+  }
   if (this.applicationTypeGateway) {
     this.replaceContent(
       `${SERVER_MAIN_SRC_DIR}${this.javaDir}repository/rowmapper/UserRowMapper.java`,
@@ -266,24 +270,9 @@ export function configureNtsSaasFrameworkToServer() {
       `org.nentangso.core.service.mapper.UserMapper`,
       true
     );
-    this.replaceContent(
-      `${SERVER_TEST_SRC_DIR}${this.javaDir}web/rest/UserResourceIT.java`,
-      `CreatedDate`,
-      `CreatedAt`,
-      true
-    );
-    this.replaceContent(
-      `${SERVER_TEST_SRC_DIR}${this.javaDir}web/rest/UserResourceIT.java`,
-      `LastModifiedBy`,
-      `UpdatedBy`,
-      true
-    );
-    this.replaceContent(
-      `${SERVER_TEST_SRC_DIR}${this.javaDir}web/rest/UserResourceIT.java`,
-      `LastModifiedDate`,
-      `UpdatedAt`,
-      true
-    );
+    this.replaceContent(`${SERVER_TEST_SRC_DIR}${this.javaDir}web/rest/UserResourceIT.java`, `CreatedDate`, `CreatedAt`, true);
+    this.replaceContent(`${SERVER_TEST_SRC_DIR}${this.javaDir}web/rest/UserResourceIT.java`, `LastModifiedBy`, `UpdatedBy`, true);
+    this.replaceContent(`${SERVER_TEST_SRC_DIR}${this.javaDir}web/rest/UserResourceIT.java`, `LastModifiedDate`, `UpdatedAt`, true);
     // PublicUserResourceIT
     this.replaceContent(
       `${SERVER_TEST_SRC_DIR}${this.javaDir}web/rest/PublicUserResourceIT.java`,
@@ -355,36 +344,40 @@ export function configureNtsSaasFrameworkToServer() {
     `{@link org.nentangso.core.web.rest.errors.NtsExceptionTranslator}`,
     false
   );
-  this.replaceContent(
-    `${SERVER_TEST_SRC_DIR}${this.javaDir}config/MysqlTestContainer.java`,
-    `memoryInBytes = 100 * 1024 * 1024`,
-    `memoryInBytes = 256 * 1024 * 1024`,
-    false
-  );
-  this.replaceContent(
-    `${SERVER_TEST_SRC_DIR}${this.javaDir}config/MysqlTestContainer.java`,
-    `memorySwapInBytes = 200 * 1024 * 1024`,
-    `memorySwapInBytes = 512 * 1024 * 1024`,
-    false
-  );
+  if (this.databaseTypeMysql) {
+    this.replaceContent(
+      `${SERVER_TEST_SRC_DIR}${this.javaDir}config/MysqlTestContainer.java`,
+      `memoryInBytes = 100 * 1024 * 1024`,
+      `memoryInBytes = 256 * 1024 * 1024`,
+      false
+    );
+    this.replaceContent(
+      `${SERVER_TEST_SRC_DIR}${this.javaDir}config/MysqlTestContainer.java`,
+      `memorySwapInBytes = 200 * 1024 * 1024`,
+      `memorySwapInBytes = 512 * 1024 * 1024`,
+      false
+    );
+  }
   this.replaceContent(
     `${SERVER_MAIN_RES_DIR}logback-spring.xml`,
     `converterClass="${this.packageName}.config.CRLFLogConverter"`,
     `converterClass="org.nentangso.core.config.NtsCRLFLogConverter"`,
     false
   );
-  this.replaceContent(
-    `${SERVER_MAIN_RES_DIR}config/liquibase/changelog/00000000000000_initial_schema.xml`,
-    `"${this.jhiPrefix}_user"`,
-    `"${this.jhiPrefix}_users"`,
-    true
-  );
-  this.replaceContent(
-    `${SERVER_MAIN_RES_DIR}config/liquibase/changelog/00000000000000_initial_schema.xml`,
-    `"${this.jhiPrefix}_authority"`,
-    `"${this.jhiPrefix}_authorities"`,
-    true
-  );
+  if (this.databaseTypeSql) {
+    this.replaceContent(
+      `${SERVER_MAIN_RES_DIR}config/liquibase/changelog/00000000000000_initial_schema.xml`,
+      `"${this.jhiPrefix}_user"`,
+      `"${this.jhiPrefix}_users"`,
+      true
+    );
+    this.replaceContent(
+      `${SERVER_MAIN_RES_DIR}config/liquibase/changelog/00000000000000_initial_schema.xml`,
+      `"${this.jhiPrefix}_authority"`,
+      `"${this.jhiPrefix}_authorities"`,
+      true
+    );
+  }
 }
 
 export function configureNtsSaasFrameworkToEntityServer() {
