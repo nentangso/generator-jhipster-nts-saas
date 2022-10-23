@@ -387,4 +387,10 @@ export function configureNtsSaasFrameworkToEntityServer() {
     `org.nentangso.core.web.rest.errors.BadRequestAlertException`,
     true
   );
+  this.replaceContent(
+    `${SERVER_MAIN_SRC_DIR}${this.entityAbsoluteFolder}/domain/${this.entityClass}${this.entitySuffix}.java`,
+    `package ${this.packageName}.domain;`,
+    `package ${this.packageName}.domain;\nimport org.nentangso.core.domain.*;`,
+    true
+  );
 }
