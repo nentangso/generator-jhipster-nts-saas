@@ -24,9 +24,27 @@ function relocatedFiles() {
   ];
 }
 
+function prefixedBeanNames() {
+  return [
+    `UserService`,
+    `UserMapper`,
+    `UserRepository`,
+    `AuthorityRepository`,
+    `UserEntity`,
+    `Authority`,
+    `AdminUserDTO`,
+    `UserDTO`,
+    `ManagedUserVM`,
+  ];
+}
+
 function replaceNtsSaasCore(...files) {
-  const search = `${this.packageName}\.(${relocatedFiles.apply(this).join('|')})`;
-  files.forEach(file => this.replaceContent(file, search, `org.nentangso.core.\$1`, true));
+  const searchByPackage = `${this.packageName}\.(${relocatedFiles.apply(this).join('|')})`;
+  const searchByName = `(\\s|\\.|,|<|\\()(${prefixedBeanNames.apply(this).join('|')})`;
+  files.forEach(file => {
+    this.replaceContent(file, searchByPackage, `org.nentangso.core.\$1`, true);
+    this.replaceContent(file, searchByName, `\$1Nts\$2`, true);
+  });
 }
 
 export function addNtsSaasFrameworkToMaven() {
@@ -108,6 +126,30 @@ export function configureNtsSaasFrameworkToServer() {
         false
       );
     } else {
+      this.needleApi.base.addBlockContentToFile(
+        {
+          path: `${SERVER_MAIN_SRC_DIR}${this.javaDir}config/`,
+          file: `DatabaseConfiguration.java`,
+          needle: `import org.springframework.data.jpa.repository.config.EnableJpaRepositories;`,
+          splicable: [`import org.springframework.boot.autoconfigure.domain.EntityScan;`],
+        },
+        `Cannot import @EntityScan`
+      );
+      this.needleApi.base.addBlockContentToFile(
+        {
+          path: `${SERVER_MAIN_SRC_DIR}${this.javaDir}config/`,
+          file: `DatabaseConfiguration.java`,
+          needle: `@EnableJpaRepositories`,
+          splicable: [`@EntityScan({"org.nentangso.core.domain", "${this.packageName}.domain"})`],
+        },
+        `Cannot configure @EntityScan`
+      );
+      this.replaceContent(
+        `${SERVER_MAIN_SRC_DIR}${this.javaDir}config/DatabaseConfiguration.java`,
+        `@EnableJpaRepositories({`,
+        `@EnableJpaRepositories({ "org.nentangso.core.repository",`,
+        false
+      );
       this.replaceContent(
         `${SERVER_MAIN_SRC_DIR}${this.javaDir}config/DatabaseConfiguration.java`,
         `@EnableJpaAuditing(auditorAwareRef = "springSecurityAuditorAware")`,
@@ -171,6 +213,12 @@ export function configureNtsSaasFrameworkToServer() {
       `Cannot import core security`
     );
   }
+  if (!this.reactive && this.authenticationTypeOauth2 && !this.applicationTypeMicroservice) {
+    replaceNtsSaasCore.apply(this, [
+      `${SERVER_MAIN_SRC_DIR}${this.javaDir}security/oauth2/CustomClaimConverter.java`,
+      `${SERVER_TEST_SRC_DIR}${this.javaDir}security/oauth2/CustomClaimConverterIT.java`,
+    ]);
+  }
   if (!this.skipUserManagement || (this.authenticationTypeOauth2 && !this.databaseTypeNo)) {
     this.needleApi.base.addBlockContentToFile(
       {
@@ -210,6 +258,7 @@ export function configureNtsSaasFrameworkToServer() {
       `${SERVER_MAIN_SRC_DIR}${this.javaDir}service/dto/User.java`,
     ]);
   }
+  replaceNtsSaasCore.apply(this, [`${SERVER_MAIN_SRC_DIR}${this.javaDir}config/CacheConfiguration.java`]);
   this.replaceContent(
     `${SERVER_TEST_SRC_DIR}${this.javaDir}web/rest/errors/ExceptionTranslatorIT.java`,
     `ErrorConstants.ERR_CONCURRENCY_FAILURE`,
@@ -235,6 +284,12 @@ export function configureNtsSaasFrameworkToServer() {
     `${SERVER_TEST_SRC_DIR}${this.javaDir}web/rest/errors/ExceptionTranslatorIT.java`,
     `{@link ExceptionTranslator}`,
     `{@link org.nentangso.core.web.rest.errors.NtsExceptionTranslator}`,
+    false
+  );
+  this.replaceContent(
+    `${SERVER_TEST_SRC_DIR}${this.javaDir}TechnicalStructureTest.java`,
+    `.layer("Client")`,
+    `.optionalLayer("Client")`,
     false
   );
   if (this.databaseTypeMysql) {
@@ -291,6 +346,17 @@ export function configureNtsSaasFrameworkToEntityServer() {
     this.applicationTypeGateway
   ) {
     replaceNtsSaasCore.apply(this, [`${SERVER_MAIN_SRC_DIR}${this.javaDir}config/CacheConfiguration.java`]);
+  }
+  if (this.databaseTypeSql) {
+    if ((this.cacheProviderEhCache || this.cacheProviderCaffeine || this.cacheProviderInfinispan || this.cacheProviderRedis) && this.enableHibernateCache) {
+      [
+        'NtsTagsEntity',
+        'NtsNoteEntity',
+        'NtsMetafieldEntity',
+        'NtsOutboxEventEntity',
+        'NtsOptionEntity',
+      ].forEach(entityClass => this.addEntityToCache(entityClass, [], 'org.nentangso.core', this.packageFolder, this.cacheProvider));
+    }
   }
   if (!this.skipUserManagement && (this.applicationTypeGateway || this.applicationTypeMonolith)) {
     replaceNtsSaasCore.apply(this, [`${SERVER_MAIN_SRC_DIR}${this.javaDir}web/rest/AccountResource.java`]);

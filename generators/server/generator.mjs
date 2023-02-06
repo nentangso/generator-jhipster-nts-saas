@@ -132,16 +132,16 @@ export default class extends ServerGenerator {
   get [POST_INSTALL_PRIORITY]() {
     return {
       ...super._postInstall(),
-      async postInstallTemplateTask() {},
+      async postInstallTemplateTask() {
+        removeNtsSaasSkipFiles?.apply(this);
+      },
     };
   }
 
   get [END_PRIORITY]() {
     return {
       ...super._end(),
-      async endTemplateTask() {
-        removeNtsSaasSkipFiles?.apply(this);
-      },
+      async endTemplateTask() {},
     };
   }
 }
