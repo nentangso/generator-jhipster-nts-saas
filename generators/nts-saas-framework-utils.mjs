@@ -157,6 +157,15 @@ export function configureNtsSaasFrameworkToServer() {
         false
       );
     }
+    if ((this.cacheProviderEhCache || this.cacheProviderCaffeine || this.cacheProviderInfinispan || this.cacheProviderRedis) && this.enableHibernateCache) {
+      [
+        'NtsTagsEntity',
+        'NtsNoteEntity',
+        'NtsMetafieldEntity',
+        'NtsOutboxEventEntity',
+        'NtsOptionEntity',
+      ].forEach(entityClass => this.addEntityToCache(entityClass, [], 'org.nentangso.core', this.packageFolder, this.cacheProvider));
+    }
   }
   this.replaceContent(
     `${SERVER_MAIN_SRC_DIR}${this.javaDir}config/SecurityConfiguration.java`,
@@ -346,17 +355,6 @@ export function configureNtsSaasFrameworkToEntityServer() {
     this.applicationTypeGateway
   ) {
     replaceNtsSaasCore.apply(this, [`${SERVER_MAIN_SRC_DIR}${this.javaDir}config/CacheConfiguration.java`]);
-  }
-  if (this.databaseTypeSql) {
-    if ((this.cacheProviderEhCache || this.cacheProviderCaffeine || this.cacheProviderInfinispan || this.cacheProviderRedis) && this.enableHibernateCache) {
-      [
-        'NtsTagsEntity',
-        'NtsNoteEntity',
-        'NtsMetafieldEntity',
-        'NtsOutboxEventEntity',
-        'NtsOptionEntity',
-      ].forEach(entityClass => this.addEntityToCache(entityClass, [], 'org.nentangso.core', this.packageFolder, this.cacheProvider));
-    }
   }
   if (!this.skipUserManagement && (this.applicationTypeGateway || this.applicationTypeMonolith)) {
     replaceNtsSaasCore.apply(this, [`${SERVER_MAIN_SRC_DIR}${this.javaDir}web/rest/AccountResource.java`]);
