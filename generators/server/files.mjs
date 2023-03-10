@@ -1,6 +1,6 @@
 import { constants } from 'generator-jhipster';
 
-const { SERVER_MAIN_SRC_DIR, SERVER_MAIN_RES_DIR, INTERPOLATE_REGEX } = constants;
+const { SERVER_MAIN_SRC_DIR, SERVER_MAIN_RES_DIR, SERVER_TEST_SRC_DIR, INTERPOLATE_REGEX } = constants;
 
 export function removeNtsSaasSkipFiles() {
   [
@@ -41,6 +41,13 @@ export function removeNtsSaasSkipFiles() {
     'config/LocaleConfiguration.java',
   ].forEach(removingFile => {
     this.removeFile(`${SERVER_MAIN_SRC_DIR}${this.javaDir}${removingFile}`);
+  });
+  [
+    'security/SecurityUtilsUnitTest.java',
+    'security/oauth2/AudienceValidatorTest.java',
+    'security/oauth2/AuthorizationHeaderUtilTest.java'
+  ].forEach(removingFile => {
+    this.removeFile(`${SERVER_TEST_SRC_DIR}${this.javaDir}${removingFile}`);
   });
 }
 
