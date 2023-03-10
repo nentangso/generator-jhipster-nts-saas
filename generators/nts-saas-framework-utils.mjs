@@ -387,4 +387,27 @@ export function configureNtsSaasFrameworkToEntityServer() {
       true
     );
   }
+  configOptimisticLockToEntityServer.apply(this);
+}
+
+export function configOptimisticLockToEntityServer() {
+  if (this.skipOptimisticLock) return;
+  const fieldName = 'version';
+  [
+    `${SERVER_MAIN_SRC_DIR}${this.entityAbsoluteFolder}/domain/${this.entityClass}${this.entitySuffix}.java`,
+    `${SERVER_MAIN_SRC_DIR}${this.entityAbsoluteFolder}/service/dto/${this.entityClass}${this.dtoSuffix}.java`,
+  ].forEach(filePath => {
+    this.replaceContent(
+      filePath,
+      `Integer (get${this.javaBeanCase(fieldName)}|${fieldName})`,
+      `int \$1`,
+      true
+    );
+  });
+  this.replaceContent(
+    `${SERVER_MAIN_SRC_DIR}${this.entityAbsoluteFolder}/domain/${this.entityClass}${this.entitySuffix}.java`,
+    `private int ${fieldName}`,
+    `@Version\nprivate int ${fieldName}`,
+    true
+  );
 }
