@@ -20,7 +20,7 @@
             <column name="event_type" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="payload" type="text">
+            <column name="payload" type="longtext">
                 <constraints nullable="false"/>
             </column>
             <column name="aggregate_version" type="int" defaultValueNumeric="0">
@@ -69,7 +69,7 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="note" type="varchar(5000)">
+            <column name="note" type="longtext">
                 <constraints nullable="false"/>
             </column>
             <column name="deleted" type="boolean" defaultValueBoolean="false">
@@ -93,7 +93,7 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="tags" type="text">
+            <column name="tags" type="longtext">
                 <constraints nullable="false"/>
             </column>
             <column name="deleted" type="boolean" defaultValueBoolean="false">
@@ -129,7 +129,7 @@
             <column name="nts_key" type="varchar(30)">
                 <constraints nullable="false"/>
             </column>
-            <column name="nts_value" type="text"/>
+            <column name="nts_value" type="longtext"/>
             <column name="nts_type" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>

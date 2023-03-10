@@ -334,6 +334,12 @@ export function configureNtsSaasFrameworkToServer() {
       `"${this.jhiPrefix}_authorities"`,
       true
     );
+    this.replaceContent(
+      `${SERVER_MAIN_RES_DIR}config/liquibase/changelog/00000000000000_initial_schema.xml`,
+      `"${this.jhiPrefix}_user_authority"`,
+      `"${this.jhiPrefix}_user_authorities"`,
+      true
+    );
   }
 }
 
