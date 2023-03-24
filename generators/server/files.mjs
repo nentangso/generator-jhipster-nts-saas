@@ -33,7 +33,6 @@ export function removeNtsSaasSkipFiles() {
     'security/oauth2/OAuthIdpTokenResponseDTO.java',
     'security/SecurityUtils.java',
     'security/SpringSecurityAuditorAware.java',
-    'config/FeignConfiguration.java',
     'config/AsyncConfiguration.java',
     'config/CRLFLogConverter.java',
     'config/DateTimeFormatConfiguration.java',
