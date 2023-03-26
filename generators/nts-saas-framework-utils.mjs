@@ -83,6 +83,12 @@ export function configureNtsSaasFrameworkToServer() {
     },
     `Cannot configure @ComponentScan`
   );
+  this.replaceContent(
+    `${SERVER_MAIN_SRC_DIR}${this.javaDir}config/FeignConfiguration.java`,
+    `@EnableFeignClients(basePackages = "${this.packageName}")`,
+    `@EnableFeignClients(basePackages = {"org.nentangso.core", "${this.packageName}"})`,
+    false
+  );
   this.replaceContent(`${SERVER_MAIN_SRC_DIR}${this.javaDir}${this.mainClass}.java`, `CRLFLogConverter`, `NtsCRLFLogConverter`, true);
   this.replaceContent(
     `${SERVER_MAIN_SRC_DIR}${this.javaDir}${this.mainClass}.java`,
