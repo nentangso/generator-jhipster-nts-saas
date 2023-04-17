@@ -46,6 +46,7 @@ export function removeNtsSaasSkipFiles() {
     'security/oauth2/AudienceValidatorTest.java',
     'security/oauth2/AuthorizationHeaderUtilTest.java',
     'service/UserServiceIT.java',
+    'service/mapper/UserMapperTest.java',
     'web/rest/PublicUserResourceIT.java',
     'web/rest/UserResourceIT.java',
   ].forEach(removingFile => {
