@@ -35,6 +35,7 @@ function prefixedBeanNames() {
     `AdminUserDTO`,
     `UserDTO`,
     `ManagedUserVM`,
+    `SecurityUtils`,
   ];
 }
 
@@ -273,7 +274,10 @@ export function configureNtsSaasFrameworkToServer() {
       `${SERVER_MAIN_SRC_DIR}${this.javaDir}service/dto/User.java`,
     ]);
   }
-  replaceNtsSaasCore.apply(this, [`${SERVER_MAIN_SRC_DIR}${this.javaDir}config/CacheConfiguration.java`]);
+  replaceNtsSaasCore.apply(this, [
+    `${SERVER_MAIN_SRC_DIR}${this.javaDir}config/CacheConfiguration.java`,
+    `${SERVER_MAIN_SRC_DIR}${this.javaDir}config/SecurityConfiguration.java`,
+  ]);
   this.replaceContent(
     `${SERVER_TEST_SRC_DIR}${this.javaDir}web/rest/errors/ExceptionTranslatorIT.java`,
     `ErrorConstants.ERR_CONCURRENCY_FAILURE`,
