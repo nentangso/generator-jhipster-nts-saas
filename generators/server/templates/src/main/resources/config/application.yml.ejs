@@ -267,6 +267,10 @@ spring:
 <%_ } _%>
   messages:
     basename: i18n/messages
+  jackson:
+    property-naming-strategy: com.fasterxml.jackson.databind.PropertyNamingStrategies.SnakeCaseStrategy
+    date-format: yyyy-MM-dd'T'HH:mm:ssZ
+    time-zone: UTC
   main:
     allow-bean-definition-overriding: true
 <%_ if (!reactive) { _%>
