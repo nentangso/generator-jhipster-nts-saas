@@ -1,3 +1,4 @@
 generators/common/templates/editorconfig.ejs
 generators/server/templates/src/main/resources/banner.txt|generators/server/templates/src/main/resources/banner.txt.ejs
 generators/server/templates/src/main/resources/config/liquibase/changelog/initial_schema.xml.ejs
+generators/server/templates/src/main/resources/config/application.yml.ejs
