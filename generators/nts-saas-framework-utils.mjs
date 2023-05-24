@@ -57,6 +57,7 @@ export function addNtsSaasFrameworkToMaven() {
     'pom',
     'import'
   );
+  this.needleApi.serverMaven.addRepository('ossrh', 'https://s01.oss.sonatype.org/content/repositories/releases/');
   if (!this.reactive) {
     this.needleApi.serverMaven.addDependencyInDirectory('', 'org.nentangso', 'nts-saas-starter-web', undefined, undefined);
   } else {
