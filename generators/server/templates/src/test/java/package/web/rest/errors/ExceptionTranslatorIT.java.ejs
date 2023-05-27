@@ -25,6 +25,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -33,6 +34,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
   <%_ } _%>
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -53,82 +55,99 @@ class ExceptionTranslatorIT {
     void testConcurrencyFailure() throws Exception {
         mockMvc.perform(get("/api/exception-translator-test/concurrency-failure")<% if (testsNeedCsrf) { %>.with(csrf())<% } %>)
             .andExpect(status().isConflict())
-            .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
-            .andExpect(jsonPath("$.message").value(ErrorConstants.ERR_CONCURRENCY_FAILURE));
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.errors").value(HttpStatus.CONFLICT.getReasonPhrase()));
     }
 <%_ } _%>
 
     @Test
     void testMethodArgumentNotValid() throws Exception {
          mockMvc.perform(post("/api/exception-translator-test/method-argument").content("{}").contentType(MediaType.APPLICATION_JSON)<% if (testsNeedCsrf) { %>.with(csrf())<% } %>)
-             .andExpect(status().isBadRequest())
-             .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
-             .andExpect(jsonPath("$.message").value(ErrorConstants.ERR_VALIDATION))
-             .andExpect(jsonPath("$.fieldErrors.[0].objectName").value("test"))
-             .andExpect(jsonPath("$.fieldErrors.[0].field").value("test"))
-             .andExpect(jsonPath("$.fieldErrors.[0].message").value("must not be null"));
+             .andExpect(status().isUnprocessableEntity())
+             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+             .andExpect(jsonPath("$.errors.test.[0]").value("must not be null"));
     }
 
     @Test
     void testMissingServletRequestPartException() throws Exception {
         mockMvc.perform(get("/api/exception-translator-test/missing-servlet-request-part")<% if (testsNeedCsrf) { %>.with(csrf())<% } %>)
             .andExpect(status().isBadRequest())
-            .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
-            .andExpect(jsonPath("$.message").value("error.http.400"));
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.errors").value(HttpStatus.BAD_REQUEST.getReasonPhrase()));
     }
 
     @Test
     void testMissingServletRequestParameterException() throws Exception {
         mockMvc.perform(get("/api/exception-translator-test/missing-servlet-request-parameter")<% if (testsNeedCsrf) { %>.with(csrf())<% } %>)
             .andExpect(status().isBadRequest())
-            .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
-            .andExpect(jsonPath("$.message").value("error.http.400"));
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.errors").value(HttpStatus.BAD_REQUEST.getReasonPhrase()));
     }
 
     @Test
     void testAccessDenied() throws Exception {
         mockMvc.perform(get("/api/exception-translator-test/access-denied")<% if (testsNeedCsrf) { %>.with(csrf())<% } %>)
             .andExpect(status().isForbidden())
-            .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
-            .andExpect(jsonPath("$.message").value("error.http.403"))
-            .andExpect(jsonPath("$.detail").value("test access denied!"));
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.errors").value("[API] This action requires merchant approval for the necessary scope."));
     }
 
     @Test
     void testUnauthorized() throws Exception {
         mockMvc.perform(get("/api/exception-translator-test/unauthorized")<% if (testsNeedCsrf) { %>.with(csrf())<% } %>)
             .andExpect(status().isUnauthorized())
-            .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
-            .andExpect(jsonPath("$.message").value("error.http.401"))
-            .andExpect(jsonPath("$.path").value("/api/exception-translator-test/unauthorized"))
-            .andExpect(jsonPath("$.detail").value("test authentication failed!"));
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.errors").value("[API] Invalid API key or access token (unrecognized login or wrong password)"));
     }
 
     @Test
     void testMethodNotSupported() throws Exception {
         mockMvc.perform(post("/api/exception-translator-test/access-denied")<% if (testsNeedCsrf) { %>.with(csrf())<% } %>)
-            .andExpect(status().isMethodNotAllowed())
-            .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
-            .andExpect(jsonPath("$.message").value("error.http.405"))
-            .andExpect(jsonPath("$.detail").value("Request method 'POST' not supported"));
+            .andExpect(status().isNotAcceptable())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.errors").value(HttpStatus.NOT_ACCEPTABLE.getReasonPhrase()));
     }
 
     @Test
     void testExceptionWithResponseStatus() throws Exception {
         mockMvc.perform(get("/api/exception-translator-test/response-status")<% if (testsNeedCsrf) { %>.with(csrf())<% } %>)
             .andExpect(status().isBadRequest())
-            .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
-            .andExpect(jsonPath("$.message").value("error.http.400"))
-            .andExpect(jsonPath("$.title").value("test response status"));
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.errors").value(HttpStatus.BAD_REQUEST.getReasonPhrase()));
     }
 
     @Test
     void testInternalServerError() throws Exception {
         mockMvc.perform(get("/api/exception-translator-test/internal-server-error")<% if (testsNeedCsrf) { %>.with(csrf())<% } %>)
             .andExpect(status().isInternalServerError())
-            .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
-            .andExpect(jsonPath("$.message").value("error.http.500"))
-            .andExpect(jsonPath("$.title").value("Internal Server Error"));
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.errors").value(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()));
     }
 
+    @Test
+    void testNtsNotFound() throws Exception {
+        mockMvc
+            .perform(get("/api/exception-translator-test/nts-not-found").with(csrf()))
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.errors").value(HttpStatus.NOT_FOUND.getReasonPhrase()));
+    }
+
+    @Test
+    void testNtsValidateObject() throws Exception {
+        mockMvc
+            .perform(post("/api/exception-translator-test/nts-validate-object").content("{}").contentType(MediaType.APPLICATION_JSON).with(csrf()))
+            .andExpect(status().isUnprocessableEntity())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.errors.test.[0]").value("must not be null"));
+    }
+
+    @Test
+    void testNtsValidationError() throws Exception {
+        mockMvc
+            .perform(put("/api/exception-translator-test/nts-validation-error").content("{}").contentType(MediaType.APPLICATION_JSON).with(csrf()))
+            .andExpect(status().isUnprocessableEntity())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.errors.test.[0]").value("must not be null"));
+    }
 }

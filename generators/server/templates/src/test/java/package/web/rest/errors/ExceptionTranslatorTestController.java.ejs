@@ -18,6 +18,9 @@
 -%>
 package <%= packageName %>.web.rest.errors;
 
+import org.nentangso.core.service.errors.NtsNotFoundException;
+import org.nentangso.core.service.errors.NtsValidationException;
+import org.nentangso.core.service.utils.NtsValidationUtils;
 <%_ if (!databaseTypeNo && !databaseTypeCassandra) { _%>
 import org.springframework.dao.ConcurrencyFailureException;
 <%_ } _%>
@@ -70,6 +73,21 @@ public class ExceptionTranslatorTestController {
     @GetMapping("/internal-server-error")
     public void internalServerError() {
         throw new RuntimeException();
+    }
+
+    @GetMapping("/nts-not-found")
+    public void ntsNotFound() {
+        throw new NtsNotFoundException();
+    }
+
+    @PostMapping("/nts-validate-object")
+    public void ntsValidateObject(@RequestBody TestDTO testDTO) {
+        NtsValidationUtils.validateObject(testDTO);
+    }
+
+    @PutMapping("/nts-validation-error")
+    public void ntsValidationError() {
+        throw new NtsValidationException("test", "must not be null");
     }
 
     public static class Test<%= dtoSuffix %> {
