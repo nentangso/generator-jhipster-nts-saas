@@ -2,3 +2,6 @@ generators/common/templates/editorconfig.ejs
 generators/server/templates/src/main/resources/banner.txt|generators/server/templates/src/main/resources/banner.txt.ejs
 generators/server/templates/src/main/resources/config/liquibase/changelog/initial_schema.xml.ejs
 generators/server/templates/src/main/resources/config/application.yml.ejs
+generators/server/templates/src/test/java/package/web/rest/errors/ExceptionTranslatorTestController.java.ejs
+generators/server/templates/src/test/java/package/web/rest/errors/ExceptionTranslatorIT_reactive.java.ejs
+generators/server/templates/src/test/java/package/web/rest/errors/ExceptionTranslatorIT.java.ejs
