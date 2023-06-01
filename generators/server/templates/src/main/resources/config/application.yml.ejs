@@ -310,6 +310,10 @@ spring:
         provider:
           oidc:
             issuer-uri: http://localhost:9080/realms/jhipster
+#          nts-client-authorized:
+#            issuer-uri: http://localhost:9080/realms/jhipster
+#          nts-helper-location:
+#            issuer-uri: http://localhost:9080/realms/jhipster
         registration:
           oidc:
   <%_ if (applicationTypeMicroservice) { _%>
@@ -320,6 +324,16 @@ spring:
             client-secret: web_app
   <%_ } _%>
             scope: openid, profile, email, offline_access # last one for refresh tokens
+#          nts-client-authorized:
+#            client-id: authorized-client-id
+#            client-secret: authorized-client-secret
+#            scope: openid, profile, email, offline_access # last one for refresh tokens
+#            authorization-grant-type: client_credentials
+#          nts-helper-location:
+#            client-id: location-client-id
+#            client-secret: location-client-secret
+#            scope: openid, profile, email, offline_access # last one for refresh tokens
+#            authorization-grant-type: client_credentials
 <%_ } _%>
 
 server:
@@ -385,6 +399,45 @@ jhipster:
         - account
         - api://default
 <%_ } _%>
+
+# ===================================================================
+# Properties power by nentangso.org
+#
+# ===================================================================
+
+#nts:
+#  security:
+#    oauth2:
+#      roles-claim: roles
+#      role-prefix: ROLE_
+#  client:
+#    authorized:
+#      client-registration-id: nts-client-authorized
+#  helper:
+#    location:
+#      enabled: false
+#      provider: org.nentangso.core.service.helper.location.NtsRestLocationProvider
+#      deserializer: org.nentangso.core.service.helper.location.NtsBitSetLocationDeserializer
+#      cache:
+#        enabled: true
+#        key-prefix: 'nts:helper:location:'
+#      bitset:
+#        claim: nlb
+#      rest:
+#        api-base-url: http://localhost:8080
+#        get-locations:
+#          uri: /api/locations
+#      keycloak:
+#        client-registration-id: nts-helper-location
+#        admin-base-url: http://localhost:9080/admin/realms/nts
+#        internal-client-id: internal-client-id
+#        custom-attribute-keys: []
+#  web:
+#    rest:
+#      exception-translator:
+#        enabled: true
+#      location:
+#        enabled: false
 
 # ===================================================================
 # Application specific properties
