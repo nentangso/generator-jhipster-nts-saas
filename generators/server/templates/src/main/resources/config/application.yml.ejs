@@ -310,10 +310,10 @@ spring:
         provider:
           oidc:
             issuer-uri: http://localhost:9080/realms/jhipster
-#          nts-client-authorized:
-#            issuer-uri: http://localhost:9080/realms/jhipster
-#          nts-helper-location:
-#            issuer-uri: http://localhost:9080/realms/jhipster
+          #nts-client-authorized:
+          #  issuer-uri: http://localhost:9080/realms/jhipster
+          #nts-helper-location:
+          #  issuer-uri: http://localhost:9080/realms/jhipster
         registration:
           oidc:
   <%_ if (applicationTypeMicroservice) { _%>
@@ -324,16 +324,16 @@ spring:
             client-secret: web_app
   <%_ } _%>
             scope: openid, profile, email, offline_access # last one for refresh tokens
-#          nts-client-authorized:
-#            client-id: authorized-client-id
-#            client-secret: authorized-client-secret
-#            scope: openid, profile, email, offline_access # last one for refresh tokens
-#            authorization-grant-type: client_credentials
-#          nts-helper-location:
-#            client-id: location-client-id
-#            client-secret: location-client-secret
-#            scope: openid, profile, email, offline_access # last one for refresh tokens
-#            authorization-grant-type: client_credentials
+          #nts-client-authorized:
+          #  client-id: authorized-client-id
+          #  client-secret: authorized-client-secret
+          #  scope: openid, profile, email, offline_access # last one for refresh tokens
+          #  authorization-grant-type: client_credentials
+          #nts-helper-location:
+          #  client-id: location-client-id
+          #  client-secret: location-client-secret
+          #  scope: openid, profile, email, offline_access # last one for refresh tokens
+          #  authorization-grant-type: client_credentials
 <%_ } _%>
 
 server:
