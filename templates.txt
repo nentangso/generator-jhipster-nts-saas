@@ -5,3 +5,4 @@ generators/server/templates/src/main/resources/config/application.yml.ejs
 generators/server/templates/src/test/java/package/web/rest/errors/ExceptionTranslatorTestController.java.ejs
 generators/server/templates/src/test/java/package/web/rest/errors/ExceptionTranslatorIT_reactive.java.ejs
 generators/server/templates/src/test/java/package/web/rest/errors/ExceptionTranslatorIT.java.ejs
+generators/server/templates/src/test/resources/config/application.yml.ejs
