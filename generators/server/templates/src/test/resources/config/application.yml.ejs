@@ -105,6 +105,9 @@ spring:
     contexts: test
 <%_ } _%>
   jackson:
+    property-naming-strategy: com.fasterxml.jackson.databind.PropertyNamingStrategies.SnakeCaseStrategy
+    date-format: yyyy-MM-dd'T'HH:mm:ssZ
+    time-zone: UTC
     serialization:
       write-durations-as-timestamps: false
 <%_ if (databaseTypeCassandra) { _%>
