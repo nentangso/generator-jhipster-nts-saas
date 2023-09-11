@@ -48,7 +48,7 @@ jobs:
       workflow-vue: ${{ steps.build.outputs.workflow-vue }}
     steps:
       - name: 'SETUP: Checkout generator-jhipster-nts-saas'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 2
       - name: 'Build matrix'
@@ -85,7 +85,7 @@ jobs:
       # Install all tools and check configuration
       #----------------------------------------------------------------------
       - name: 'SETUP: Checkout generator-jhipster-nts-saas'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           path: generator-jhipster-nts-saas
           fetch-depth: 2
